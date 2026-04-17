@@ -33,7 +33,7 @@ const schema = z
     // Optional — when both slots are taken the customer submits with no slot
     // and the owner follows up to arrange a custom time.
     eventTimeSlot: z.enum(["12:00", "16:00"]).nullable().optional(),
-    guestCount: z.coerce.number().int().min(10, "Minimum 10 guests"),
+    guestCount: z.coerce.number().int().min(10).optional().default(10),
     estimatedLbs: z.coerce.number().min(10, "Minimum 10 lbs"),
     eventType: z.string().optional().or(z.literal("")),
     eventLocation: z.string().optional().or(z.literal("")),
@@ -179,7 +179,8 @@ export function CateringRequestForm() {
         phone: data.phone,
         eventDate: data.eventDate,
         eventTimeSlot: slotForSubmit,
-        guestCount: Number(data.guestCount),
+        // Auto-computed: ~2 guests per lb (rule of thumb), floored at 10
+        guestCount: Math.max(10, Math.ceil(Number(data.estimatedLbs) * 2)),
         estimatedLbs: Number(data.estimatedLbs),
         eventType: data.eventType || null,
         eventLocation: data.eventLocation || null,
@@ -454,25 +455,6 @@ export function CateringRequestForm() {
             {form.formState.errors.eventTimeSlot && (
               <p className="mt-1 text-xs text-chile">
                 {form.formState.errors.eventTimeSlot.message}
-              </p>
-            )}
-          </div>
-
-          {/* Guest count */}
-          <div>
-            <Label htmlFor="guestCount">
-              {t("catering.form.guestCount", "Guest count")} *
-            </Label>
-            <Input
-              id="guestCount"
-              type="number"
-              min={10}
-              step={1}
-              {...form.register("guestCount", { valueAsNumber: true })}
-            />
-            {form.formState.errors.guestCount && (
-              <p className="mt-1 text-xs text-chile">
-                {form.formState.errors.guestCount.message}
               </p>
             )}
           </div>
