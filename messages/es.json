@@ -362,7 +362,18 @@
       "col_total": "Total",
       "col_lbs": "Lbs",
       "col_status": "Estado",
-      "col_payment": "Pago"
+      "col_payment": "Pago",
+      "status_pending": "Pendiente",
+      "status_confirmed": "Confirmado",
+      "status_ready": "Listo",
+      "status_picked_up": "Recogido",
+      "status_cancelled": "Cancelado",
+      "status_no_show": "No se presentó",
+      "payment_unpaid": "Sin pagar",
+      "payment_deposit_paid": "Depósito",
+      "payment_paid": "Pagado",
+      "payment_refunded": "Reembolsado",
+      "payment_failed": "Fallido"
     },
     "orderDetail": {
       "statusTitle": "Estado",

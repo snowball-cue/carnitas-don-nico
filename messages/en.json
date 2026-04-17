@@ -362,7 +362,18 @@
       "col_total": "Total",
       "col_lbs": "Lbs",
       "col_status": "Status",
-      "col_payment": "Payment"
+      "col_payment": "Payment",
+      "status_pending": "Pending",
+      "status_confirmed": "Confirmed",
+      "status_ready": "Ready",
+      "status_picked_up": "Picked up",
+      "status_cancelled": "Cancelled",
+      "status_no_show": "No-show",
+      "payment_unpaid": "Unpaid",
+      "payment_deposit_paid": "Deposit",
+      "payment_paid": "Paid",
+      "payment_refunded": "Refunded",
+      "payment_failed": "Failed"
     },
     "orderDetail": {
       "statusTitle": "Status",
