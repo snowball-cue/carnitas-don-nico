@@ -19,7 +19,11 @@ export interface CateringRequestOwnerProps {
   email: string;
   phone: string;
   eventDate: string;
-  eventTimeSlot?: "12:00" | "16:00";
+  /**
+   * null = customer submitted with both fixed slots already booked; owner
+   * must follow up to arrange a custom time.
+   */
+  eventTimeSlot?: "12:00" | "16:00" | null;
   guestCount: number;
   estimatedLbs: number;
   eventType: string | null;
@@ -27,8 +31,14 @@ export interface CateringRequestOwnerProps {
   cutsPreference: string | null;
   includesSides: boolean;
   deliveryNeeded: boolean;
+  deliveryMiles?: number | null;
   notes: string | null;
   adminUrl: string;
+}
+
+function formatDeliveryFee(miles: number): string {
+  const fee = Math.max(0, miles - 10) * 2;
+  return fee === 0 ? "Free (within 10 mi)" : `$${fee.toFixed(2)}`;
 }
 
 export default function CateringRequestOwner(props: CateringRequestOwnerProps) {
@@ -69,9 +79,16 @@ export default function CateringRequestOwner(props: CateringRequestOwnerProps) {
 
             <Text style={styles.sectionLabel}>Event</Text>
             {row("Date", props.eventDate)}
-            {props.eventTimeSlot
-              ? row("Time", props.eventTimeSlot === "12:00" ? "12:00 PM" : "4:00 PM")
-              : null}
+            {props.eventTimeSlot === "12:00" || props.eventTimeSlot === "16:00" ? (
+              row("Time", props.eventTimeSlot === "12:00" ? "12:00 PM" : "4:00 PM")
+            ) : (
+              <Section style={styles.itemRow}>
+                <Text style={styles.itemName}>Time</Text>
+                <Text style={styles.customTimeBadge}>
+                  CUSTOM TIME REQUESTED (both slots booked)
+                </Text>
+              </Section>
+            )}
             {row("Guests", String(props.guestCount))}
             {row("Estimated lbs", `${props.estimatedLbs} lb`)}
             {props.eventType ? row("Event type", props.eventType) : null}
@@ -81,6 +98,16 @@ export default function CateringRequestOwner(props: CateringRequestOwnerProps) {
               : null}
             {row("Sides included", props.includesSides ? "Yes" : "No")}
             {row("Delivery needed", props.deliveryNeeded ? "Yes" : "No")}
+            {props.deliveryNeeded &&
+            props.deliveryMiles !== null &&
+            props.deliveryMiles !== undefined
+              ? row(
+                  "Distance",
+                  `${Number(props.deliveryMiles).toFixed(1)} mi (${formatDeliveryFee(
+                    Number(props.deliveryMiles),
+                  )})`,
+                )
+              : null}
 
             {props.notes ? (
               <>
@@ -174,6 +201,16 @@ const styles: Record<string, React.CSSProperties> = {
     margin: 0,
     display: "table-cell",
     textAlign: "right" as const,
+  },
+  customTimeBadge: {
+    color: "#b91c1c",
+    fontSize: "13px",
+    fontWeight: 700,
+    margin: 0,
+    display: "table-cell",
+    textAlign: "right" as const,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.5px",
   },
   ctaWrap: { textAlign: "center" as const, margin: "8px 0" },
   ctaBtn: {

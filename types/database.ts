@@ -374,7 +374,7 @@ export interface CateringRequestRow {
   email: string;
   phone: string;
   event_date: DateString;
-  event_time_slot: "12:00" | "16:00";
+  event_time_slot: "12:00" | "16:00" | null;
   guest_count: number;
   estimated_lbs: number;
   event_type: string | null;
@@ -382,6 +382,7 @@ export interface CateringRequestRow {
   cuts_preference: string | null;
   includes_sides: boolean;
   delivery_needed: boolean;
+  delivery_miles: number | null;
   notes: string | null;
   status: CateringStatus;
   quoted_price: number | null;

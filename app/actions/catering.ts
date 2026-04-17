@@ -19,7 +19,12 @@ const inputSchema = z.object({
   email: z.string().trim().email(),
   phone: z.string().trim().min(7),
   eventDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date"),
-  eventTimeSlot: z.enum(["12:00", "16:00"]).default("12:00"),
+  // null = "custom time" request when both fixed slots are taken.
+  eventTimeSlot: z
+    .enum(["12:00", "16:00"])
+    .nullable()
+    .optional()
+    .default("12:00"),
   guestCount: z
     .number()
     .int()
@@ -30,6 +35,7 @@ const inputSchema = z.object({
   cutsPreference: z.string().trim().max(500).optional().nullable(),
   includesSides: z.boolean().default(true),
   deliveryNeeded: z.boolean().default(false),
+  deliveryMiles: z.number().min(0).max(500).optional().nullable(),
   notes: z.string().trim().max(4000).optional().nullable(),
   locale: z.enum(["en", "es"]).default("es"),
 });
@@ -39,7 +45,23 @@ export type CateringRequestInput = z.input<typeof inputSchema>;
 export interface CateringActionResult {
   success: boolean;
   reference?: string;
+  /**
+   * Machine-readable error code when `success === false`.
+   * Known values:
+   *   - "slot_taken" — the (date, slot) pair was grabbed by another request
+   *     in between availability check and insert.
+   */
   error?: string;
+  /**
+   * Human-readable English message (caller can localize via t()).
+   */
+  reason?: string;
+}
+
+export interface SlotAvailability {
+  /** true = open, false = already booked by an active (non-cancelled) request. */
+  noon: boolean;
+  fourpm: boolean;
 }
 
 function buildReference(id: string): string {
@@ -73,6 +95,9 @@ export async function submitCateringRequest(
     // the service-role client to make it bulletproof against auth hiccups.
     const db = createServiceRoleClient();
 
+    const slotToInsert: "12:00" | "16:00" | null =
+      data.eventTimeSlot ?? null;
+
     const { data: inserted, error } = await db
       .from("catering_requests")
       .insert({
@@ -80,7 +105,7 @@ export async function submitCateringRequest(
         email: data.email,
         phone: data.phone,
         event_date: data.eventDate,
-        event_time_slot: data.eventTimeSlot,
+        event_time_slot: slotToInsert,
         guest_count: data.guestCount,
         estimated_lbs: data.estimatedLbs,
         event_type: data.eventType ?? null,
@@ -88,6 +113,7 @@ export async function submitCateringRequest(
         cuts_preference: data.cutsPreference ?? null,
         includes_sides: data.includesSides,
         delivery_needed: data.deliveryNeeded,
+        delivery_miles: data.deliveryMiles ?? null,
         notes: data.notes ?? null,
         status: "new",
         customer_id: customerId,
@@ -95,7 +121,20 @@ export async function submitCateringRequest(
       .select("*")
       .single();
 
-    if (error) throw error;
+    if (error) {
+      // Partial UNIQUE index (event_date, event_time_slot) WHERE status != 'cancelled'
+      // — if two requests race for the same slot, the loser gets 23505.
+      const pgCode = (error as { code?: string }).code;
+      if (pgCode === "23505") {
+        return {
+          success: false,
+          error: "slot_taken",
+          reason:
+            "The slot was just booked by someone else. Please pick another.",
+        };
+      }
+      throw error;
+    }
     const row = inserted as CateringRequestRow;
     const reference = buildReference(row.id);
 
@@ -116,7 +155,7 @@ export async function submitCateringRequest(
           email: data.email,
           phone: data.phone,
           eventDate: data.eventDate,
-          eventTimeSlot: data.eventTimeSlot,
+          eventTimeSlot: slotToInsert,
           guestCount: data.guestCount,
           estimatedLbs: data.estimatedLbs,
           eventType: data.eventType ?? null,
@@ -124,6 +163,7 @@ export async function submitCateringRequest(
           cutsPreference: data.cutsPreference ?? null,
           includesSides: data.includesSides,
           deliveryNeeded: data.deliveryNeeded,
+          deliveryMiles: data.deliveryMiles ?? null,
           notes: data.notes ?? null,
           adminUrl,
         }),
@@ -161,6 +201,56 @@ export async function submitCateringRequest(
       success: false,
       error: e instanceof Error ? e.message : "Failed to submit request",
     };
+  }
+}
+
+/**
+ * Check whether the two catering slots for a given date are still open.
+ *
+ * Each event_date has exactly two bookable slots: "12:00" and "16:00". A slot
+ * is considered unavailable if ANY non-cancelled catering_requests row already
+ * exists for that (event_date, event_time_slot). This is the same rule
+ * enforced at the DB level by the partial UNIQUE index
+ * `uniq_catering_day_slot_active` in migration 0008 — that index is the
+ * ultimate guard against race conditions; this query is just for UX.
+ *
+ * @returns { noon, fourpm } where `true` means the slot is AVAILABLE (open).
+ */
+export async function getCateringSlotAvailability(
+  eventDate: string,
+): Promise<SlotAvailability> {
+  try {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) {
+      // Bad input — treat as both open so the UI doesn't mislead users.
+      return { noon: true, fourpm: true };
+    }
+    const db = createServiceRoleClient();
+    const { data, error } = await db
+      .from("catering_requests")
+      .select("event_time_slot")
+      .eq("event_date", eventDate)
+      .neq("status", "cancelled")
+      .not("event_time_slot", "is", null);
+
+    if (error) {
+      console.error("[catering] getCateringSlotAvailability failed:", error);
+      // Fail-open: better to let them submit and catch 23505 than to block the
+      // whole form on a transient DB hiccup.
+      return { noon: true, fourpm: true };
+    }
+
+    const taken = new Set(
+      (data ?? [])
+        .map((r) => r.event_time_slot)
+        .filter((s): s is "12:00" | "16:00" => s !== null),
+    );
+    return {
+      noon: !taken.has("12:00"),
+      fourpm: !taken.has("16:00"),
+    };
+  } catch (e) {
+    console.error("[catering] getCateringSlotAvailability threw:", e);
+    return { noon: true, fourpm: true };
   }
 }
 

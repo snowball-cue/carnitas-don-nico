@@ -73,6 +73,21 @@ export default async function AdminCateringDetailPage({ params }: PageProps) {
                 label="Estimated lbs"
                 value={`${Number(req.estimated_lbs).toFixed(1)} lb`}
               />
+              {req.event_time_slot ? (
+                <Field
+                  label="Time slot"
+                  value={req.event_time_slot === "12:00" ? "12:00 PM" : "4:00 PM"}
+                />
+              ) : (
+                <div className="flex flex-col gap-0.5 border-b border-nopal/5 pb-1 last:border-b-0">
+                  <span className="text-xs uppercase tracking-wide text-mole/60">
+                    Time slot
+                  </span>
+                  <span className="inline-flex w-fit items-center rounded-md border border-jamaica/40 bg-jamaica/10 px-2 py-0.5 text-sm font-semibold text-jamaica">
+                    Custom time requested
+                  </span>
+                </div>
+              )}
               {req.event_type ? (
                 <Field label="Event type" value={req.event_type} />
               ) : null}
@@ -90,6 +105,18 @@ export default async function AdminCateringDetailPage({ params }: PageProps) {
                 label="Delivery needed"
                 value={req.delivery_needed ? "Yes" : "No"}
               />
+              {req.delivery_needed && req.delivery_miles !== null ? (
+                <Field
+                  label="Distance"
+                  value={(() => {
+                    const miles = Number(req.delivery_miles);
+                    const fee = Math.max(0, miles - 10) * 2;
+                    const feeLabel =
+                      fee === 0 ? "Free (within 10 mi)" : `$${fee.toFixed(2)}`;
+                    return `${miles.toFixed(1)} mi (${feeLabel})`;
+                  })()}
+                />
+              ) : null}
             </CardContent>
           </Card>
 
