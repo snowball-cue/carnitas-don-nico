@@ -129,7 +129,7 @@ export function Header() {
                   <DropdownMenuItem asChild>
                     <Link href="/account">
                       <UserIcon className="mr-2 h-4 w-4" />
-                      {t("nav.profile")}
+                      {t("nav.account")}
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>

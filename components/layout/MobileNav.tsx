@@ -44,7 +44,7 @@ const TABS: TabDef[] = [
   {
     href: "/account",
     icon: UserIcon,
-    labelKey: "nav.profile",
+    labelKey: "nav.account",
     match: (p) => p.startsWith("/account"),
   },
 ];
