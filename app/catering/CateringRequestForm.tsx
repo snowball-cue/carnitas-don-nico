@@ -53,9 +53,9 @@ function computeDeliveryFee(miles: number): number {
 }
 
 function minEventDate(): string {
-  // today + 3 days, in local-date YYYY-MM-DD
+  // today + 14 days (2 weeks lead time), in local-date YYYY-MM-DD
   const d = new Date();
-  d.setDate(d.getDate() + 3);
+  d.setDate(d.getDate() + 14);
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");

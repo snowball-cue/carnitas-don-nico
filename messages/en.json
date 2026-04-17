@@ -102,7 +102,7 @@
       "email": "Email",
       "phone": "Phone",
       "eventDate": "Event date",
-      "eventDateHint": "At least 3 days from today.",
+      "eventDateHint": "At least 2 weeks from today.",
       "guestCount": "Guest count",
       "estimatedLbs": "Estimated pounds",
       "estimatedLbsHint": "Rule of thumb: about 1/2 lb per guest, more for big eaters.",

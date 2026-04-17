@@ -102,7 +102,7 @@
       "email": "Correo",
       "phone": "Teléfono",
       "eventDate": "Fecha del evento",
-      "eventDateHint": "Mínimo 3 días a partir de hoy.",
+      "eventDateHint": "Mínimo 2 semanas a partir de hoy.",
       "guestCount": "Número de invitados",
       "estimatedLbs": "Libras estimadas",
       "estimatedLbsHint": "Regla de dedo: como 1/2 lb por persona, más si son buenos para comer.",

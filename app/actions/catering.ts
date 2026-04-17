@@ -18,7 +18,22 @@ const inputSchema = z.object({
   fullName: z.string().trim().min(1),
   email: z.string().trim().email(),
   phone: z.string().trim().min(7),
-  eventDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date"),
+  eventDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date")
+    .refine(
+      (s) => {
+        const [y, m, d] = s.split("-").map(Number);
+        const event = new Date(Date.UTC(y, (m ?? 1) - 1, d ?? 1));
+        const now = new Date();
+        const today = new Date(
+          Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()),
+        );
+        const diffDays = (event.getTime() - today.getTime()) / 86_400_000;
+        return diffDays >= 14;
+      },
+      { message: "Catering requires at least 2 weeks advance notice" },
+    ),
   // null = "custom time" request when both fixed slots are taken.
   eventTimeSlot: z
     .enum(["12:00", "16:00"])

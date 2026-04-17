@@ -59,7 +59,7 @@ export default function CheckoutPage() {
       phone: "",
       email: "",
       notes: "",
-      paymentMethod: "pay_in_full",
+      paymentMethod: "pay_in_person",
     },
   });
 
@@ -101,7 +101,7 @@ export default function CheckoutPage() {
       phone: p.phone ?? "",
       email: p.email ?? "",
       notes: "",
-      paymentMethod: form.getValues("paymentMethod") || "pay_in_full",
+      paymentMethod: form.getValues("paymentMethod") || "pay_in_person",
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile?.id]);
@@ -241,6 +241,8 @@ export default function CheckoutPage() {
             <div className="space-y-2">
               <PaymentOption
                 value="pay_in_full"
+                disabled
+                badge={t("checkout.comingSoon", "Coming soon")}
                 title={t("checkout.payFull", "Pay in full now (card)")}
                 desc={t(
                   "checkout.payFullDesc",
@@ -250,6 +252,8 @@ export default function CheckoutPage() {
               />
               <PaymentOption
                 value="deposit_50"
+                disabled
+                badge={t("checkout.comingSoon", "Coming soon")}
                 title={t("checkout.payDeposit", "Pay 50% deposit now (card)")}
                 desc={t(
                   "checkout.payDepositDesc",
@@ -342,26 +346,41 @@ function PaymentOption({
   title,
   desc,
   register,
+  disabled,
+  badge,
 }: {
   value: string;
   title: string;
   desc: string;
   register: import("react-hook-form").UseFormRegisterReturn;
+  disabled?: boolean;
+  badge?: string;
 }) {
   return (
     <label
       className={cn(
-        "flex cursor-pointer items-start gap-3 rounded-md border border-nopal/20 bg-papel px-3 py-3 transition-colors hover:border-nopal/50"
+        "flex items-start gap-3 rounded-md border border-nopal/20 bg-papel px-3 py-3 transition-colors",
+        disabled
+          ? "cursor-not-allowed opacity-50"
+          : "cursor-pointer hover:border-nopal/50",
       )}
     >
       <input
         type="radio"
         value={value}
         {...register}
-        className="mt-1 h-4 w-4 accent-oro"
+        disabled={disabled}
+        className="mt-1 h-4 w-4 accent-oro disabled:opacity-60"
       />
-      <div>
-        <p className="font-medium text-mole">{title}</p>
+      <div className="flex-1">
+        <p className="flex items-center gap-2 font-medium text-mole">
+          {title}
+          {badge ? (
+            <span className="rounded-full bg-mole/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-mole/70">
+              {badge}
+            </span>
+          ) : null}
+        </p>
         <p className="text-xs text-mole/70">{desc}</p>
       </div>
     </label>
