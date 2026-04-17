@@ -304,10 +304,44 @@
     "passkeyUnsupported": "Tu navegador no soporta passkeys — puedes saltar este paso."
   },
   "admin": {
+    "nav": {
+      "dashboard": "Panel de control",
+      "orders": "Pedidos",
+      "calendar": "Calendario",
+      "menu": "Menú",
+      "expenses": "P&G / Gastos",
+      "shoppingList": "Lista de compras",
+      "investments": "Inversiones",
+      "receipts": "Recibos",
+      "notifications": "Notificaciones",
+      "customers": "Clientes"
+    },
     "dashboard": {
-      "title": "Panel",
-      "capacityLabel": "Capacidad",
-      "closedLabel": "Cerrado"
+      "title": "Panel de control",
+      "capacityLabel": "{{reserved}} / {{capacity}} lb",
+      "closedLabel": "Cerrado",
+      "greetingMorning": "¡Buenos días, {{name}}!",
+      "greetingAfternoon": "¡Buenas tardes, {{name}}!",
+      "greetingEvening": "¡Buenas noches, {{name}}!",
+      "subtitle": "Esto es lo que está pasando en el cazo.",
+      "nextPickup": "Próxima recolección",
+      "ordersOnDate": "{{count}} pedidos activos",
+      "noUpcomingPickup": "No hay próxima recolección programada.",
+      "revenue": "Ingresos",
+      "todayAndMtd": "Hoy y mes a la fecha",
+      "today": "hoy",
+      "mtdValue": "{{amount}} mes a la fecha",
+      "orders": "Pedidos",
+      "ordersDescription": "Nuevos hoy",
+      "newToday": "nuevos hoy",
+      "pendingPickups": "{{count}} recolecciones pendientes",
+      "recentOrders": "Pedidos recientes",
+      "viewAll": "Ver todos",
+      "noRecentOrders": "Aún no hay pedidos.",
+      "registeredCustomer": "Cliente registrado",
+      "notifications": "Notificaciones",
+      "unread": "sin leer",
+      "viewNotifications": "Ver notificaciones"
     },
     "orders": {
       "title": "Pedidos",

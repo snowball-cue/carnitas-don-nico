@@ -304,10 +304,44 @@
     "passkeyUnsupported": "Your browser doesn't support passkeys — you can skip this."
   },
   "admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "orders": "Orders",
+      "calendar": "Calendar",
+      "menu": "Menu",
+      "expenses": "P&L / Expenses",
+      "shoppingList": "Shopping List",
+      "investments": "Investments",
+      "receipts": "Receipts",
+      "notifications": "Notifications",
+      "customers": "Customers"
+    },
     "dashboard": {
       "title": "Dashboard",
-      "capacityLabel": "Capacity",
-      "closedLabel": "Closed"
+      "capacityLabel": "{{reserved}} / {{capacity}} lb",
+      "closedLabel": "Closed",
+      "greetingMorning": "Good morning, {{name}}!",
+      "greetingAfternoon": "Good afternoon, {{name}}!",
+      "greetingEvening": "Good evening, {{name}}!",
+      "subtitle": "Here's what's happening at the cazo.",
+      "nextPickup": "Next pickup",
+      "ordersOnDate": "{{count}} active orders",
+      "noUpcomingPickup": "No upcoming pickup scheduled.",
+      "revenue": "Revenue",
+      "todayAndMtd": "Today & month-to-date",
+      "today": "today",
+      "mtdValue": "{{amount}} MTD",
+      "orders": "Orders",
+      "ordersDescription": "New today",
+      "newToday": "new today",
+      "pendingPickups": "{{count}} pending pickups",
+      "recentOrders": "Recent orders",
+      "viewAll": "View all",
+      "noRecentOrders": "No orders yet.",
+      "registeredCustomer": "Registered customer",
+      "notifications": "Notifications",
+      "unread": "unread",
+      "viewNotifications": "View notifications"
     },
     "orders": {
       "title": "Orders",
