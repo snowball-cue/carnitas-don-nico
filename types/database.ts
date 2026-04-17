@@ -398,6 +398,102 @@ export type CateringRequestInsert = Partial<CateringRequestRow> &
   >;
 export type CateringRequestUpdate = Partial<CateringRequestRow>;
 
+// -----------------------------------------------------------------------------
+// Marketing / broadcasts (migration 0009)
+// -----------------------------------------------------------------------------
+export type GroupColor =
+  | "nopal"
+  | "oro"
+  | "chile"
+  | "jamaica"
+  | "talavera"
+  | "agave";
+
+export type BroadcastLocale = "es" | "en";
+
+export type BroadcastStatus =
+  | "draft"
+  | "sending"
+  | "sent"
+  | "failed"
+  | "cancelled";
+
+export type BroadcastRecipientStatus =
+  | "pending"
+  | "sent"
+  | "failed"
+  | "skipped_unsubscribed"
+  | "skipped_test_mode";
+
+export interface CustomerGroupRow {
+  id: Uuid;
+  name: string;
+  description: string | null;
+  color: GroupColor | string;
+  created_at: Timestamptz;
+  updated_at: Timestamptz;
+}
+export type CustomerGroupInsert = Partial<CustomerGroupRow> &
+  Pick<CustomerGroupRow, "name">;
+export type CustomerGroupUpdate = Partial<CustomerGroupRow>;
+
+export interface CustomerGroupMembershipRow {
+  id: Uuid;
+  group_id: Uuid;
+  customer_id: Uuid | null;
+  email: string | null;
+  added_at: Timestamptz;
+}
+export type CustomerGroupMembershipInsert = Partial<CustomerGroupMembershipRow> &
+  Pick<CustomerGroupMembershipRow, "group_id">;
+export type CustomerGroupMembershipUpdate =
+  Partial<CustomerGroupMembershipRow>;
+
+export interface UnsubscribedEmailRow {
+  email: string;
+  unsubscribed_at: Timestamptz;
+  reason: string | null;
+  source: string | null;
+}
+export type UnsubscribedEmailInsert = Partial<UnsubscribedEmailRow> &
+  Pick<UnsubscribedEmailRow, "email">;
+export type UnsubscribedEmailUpdate = Partial<UnsubscribedEmailRow>;
+
+export interface BroadcastCampaignRow {
+  id: Uuid;
+  subject: string;
+  body_html: string;
+  body_text: string | null;
+  locale: BroadcastLocale;
+  status: BroadcastStatus;
+  total_recipients: number;
+  delivered_count: number;
+  failed_count: number;
+  recipient_filter: Json;
+  created_by: Uuid | null;
+  created_at: Timestamptz;
+  started_at: Timestamptz | null;
+  finished_at: Timestamptz | null;
+}
+export type BroadcastCampaignInsert = Partial<BroadcastCampaignRow> &
+  Pick<BroadcastCampaignRow, "subject" | "body_html">;
+export type BroadcastCampaignUpdate = Partial<BroadcastCampaignRow>;
+
+export interface BroadcastRecipientRow {
+  id: Uuid;
+  campaign_id: Uuid;
+  email: string;
+  name: string | null;
+  customer_id: Uuid | null;
+  status: BroadcastRecipientStatus;
+  resend_id: string | null;
+  error: string | null;
+  sent_at: Timestamptz | null;
+}
+export type BroadcastRecipientInsert = Partial<BroadcastRecipientRow> &
+  Pick<BroadcastRecipientRow, "campaign_id" | "email">;
+export type BroadcastRecipientUpdate = Partial<BroadcastRecipientRow>;
+
 // ============================================================================
 // Database interface (shape matches @supabase generated types)
 // ============================================================================
@@ -483,6 +579,31 @@ export interface Database {
         Row: CateringRequestRow;
         Insert: CateringRequestInsert;
         Update: CateringRequestUpdate;
+      };
+      customer_groups: {
+        Row: CustomerGroupRow;
+        Insert: CustomerGroupInsert;
+        Update: CustomerGroupUpdate;
+      };
+      customer_group_memberships: {
+        Row: CustomerGroupMembershipRow;
+        Insert: CustomerGroupMembershipInsert;
+        Update: CustomerGroupMembershipUpdate;
+      };
+      unsubscribed_emails: {
+        Row: UnsubscribedEmailRow;
+        Insert: UnsubscribedEmailInsert;
+        Update: UnsubscribedEmailUpdate;
+      };
+      broadcast_campaigns: {
+        Row: BroadcastCampaignRow;
+        Insert: BroadcastCampaignInsert;
+        Update: BroadcastCampaignUpdate;
+      };
+      broadcast_recipients: {
+        Row: BroadcastRecipientRow;
+        Insert: BroadcastRecipientInsert;
+        Update: BroadcastRecipientUpdate;
       };
     };
     Views: Record<string, never>;

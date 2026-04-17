@@ -14,6 +14,8 @@ import {
   ReceiptText,
   Bell,
   Users,
+  UserRound,
+  Send,
   UtensilsCrossed,
   Menu as MenuIcon,
   LogOut,
@@ -87,6 +89,17 @@ function useNavItems(unreadCount: number): NavItem[] {
         badge: unreadCount,
       },
       { href: "/admin/customers", labelKey: "admin.nav.customers", icon: Users },
+      {
+        href: "/admin/contacts",
+        labelKey: "admin.nav.contacts",
+        icon: UserRound,
+      },
+      { href: "/admin/groups", labelKey: "admin.nav.groups", icon: Users },
+      {
+        href: "/admin/broadcasts",
+        labelKey: "admin.nav.broadcasts",
+        icon: Send,
+      },
     ],
     [unreadCount],
   );
