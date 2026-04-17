@@ -171,9 +171,20 @@ export default function GuestCheckoutPage() {
               </div>
               <div>
                 <Label htmlFor="email">
-                  {t("checkout.emailLabel", "Email (optional)")}
+                  {t("checkout.emailLabel", "Email")}
                 </Label>
-                <Input id="email" type="email" {...form.register("email")} />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={t("checkout.emailPlaceholder", "you@example.com")}
+                  {...form.register("email")}
+                />
+                <p className="text-xs text-mole/60 mt-1">
+                  {t(
+                    "checkout.emailHint",
+                    "We'll send your receipt + a pickup reminder the day before.",
+                  )}
+                </p>
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="notes">
