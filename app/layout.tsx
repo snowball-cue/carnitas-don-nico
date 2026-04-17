@@ -2,9 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, Caveat } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "./providers";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { MobileNav } from "@/components/layout/MobileNav";
+import { HeaderClient, FooterClient, MobileNavClient } from "./_chrome";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -87,10 +85,10 @@ export default function RootLayout({
     >
       <body className="bg-papel text-mole font-sans antialiased min-h-screen flex flex-col">
         <Providers>
-          <Header />
+          <HeaderClient />
           <main className="flex-1 pb-20 md:pb-0">{children}</main>
-          <Footer />
-          <MobileNav />
+          <FooterClient />
+          <MobileNavClient />
           <Toaster
             position="top-center"
             closeButton
