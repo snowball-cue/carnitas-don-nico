@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* -----------------------------------------------------------------
+       shadcn tokens, HSL triplets — mapped to Carnitas Don Nico palette.
+       Raw hex → HSL:
+         nopal        #3A4A2F  → 95 22% 24%
+         nopal-dark   #1F2818  → 95 25% 13%
+         oro          #C8A04A  → 42 52% 54%
+         oro-light    #E0BE73  → 42 61% 67%
+         papel        #F5EFE0  → 44 56% 92%
+         papel-warm   #EDE3CE  → 42 52% 87%
+         chile        #9A2E2A  → 2  57% 39%
+         jamaica      #B13A5E  → 343 51% 46%
+         talavera     #2B5D8F  → 210 54% 37%
+         agave        #7A8D5C  → 82 22% 46%
+         mole         #1F2818  → 95 25% 13%
+         mole-60      #4A4033  → 30 18% 24%
+    ----------------------------------------------------------------- */
+    --background: 44 56% 92%;
+    --foreground: 95 25% 13%;
+
+    --card: 42 52% 87%;
+    --card-foreground: 95 25% 13%;
+
+    --popover: 44 56% 92%;
+    --popover-foreground: 95 25% 13%;
+
+    --primary: 95 22% 24%;
+    --primary-foreground: 44 56% 92%;
+
+    --secondary: 42 52% 54%;
+    --secondary-foreground: 95 25% 13%;
+
+    --muted: 42 52% 87%;
+    --muted-foreground: 30 18% 24%;
+
+    --accent: 42 52% 54%;
+    --accent-foreground: 95 25% 13%;
+
+    --destructive: 2 57% 39%;
+    --destructive-foreground: 44 56% 92%;
+
+    --border: 42 40% 70%;
+    --input: 42 40% 75%;
+    --ring: 42 52% 54%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Invert: papel → near-black, nopal stays dark & saturated */
+    --background: 95 25% 6%;
+    --foreground: 44 40% 92%;
+
+    --card: 95 22% 10%;
+    --card-foreground: 44 40% 92%;
+
+    --popover: 95 25% 6%;
+    --popover-foreground: 44 40% 92%;
+
+    --primary: 42 52% 54%;
+    --primary-foreground: 95 25% 13%;
+
+    --secondary: 95 22% 18%;
+    --secondary-foreground: 44 40% 92%;
+
+    --muted: 95 22% 14%;
+    --muted-foreground: 44 20% 75%;
+
+    --accent: 42 61% 67%;
+    --accent-foreground: 95 25% 13%;
+
+    --destructive: 2 57% 50%;
+    --destructive-foreground: 44 56% 92%;
+
+    --border: 95 22% 20%;
+    --input: 95 22% 22%;
+    --ring: 42 52% 54%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), ui-serif, Georgia, serif;
+    font-feature-settings:
+      "ss01",
+      "ss02";
+  }
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--ring));
+    border-radius: inherit;
+  }
+}
+
+@layer components {
+  /* Lotería-card ornate border */
+  .frame-loteria {
+    border: 1.5px solid #c8a04a;
+    border-radius: 1.25rem;
+    box-shadow:
+      inset 0 0 0 3px #f5efe0,
+      inset 0 0 0 4.5px #c8a04a;
+  }
+
+  /* Papel picado borders using a lightweight SVG mask.
+     Uses an inline gold bunting pattern that tiles horizontally. */
+  .papel-picado-top {
+    --papel-picado-url: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40' preserveAspectRatio='none'><path d='M0 0h80v20l-10 10-10-10-10 10-10-10-10 10-10-10-10 10-10-10V0z' fill='%23C8A04A'/></svg>");
+    background-image: var(--papel-picado-url);
+    background-repeat: repeat-x;
+    background-position: top center;
+    background-size: auto 40px;
+    padding-top: 48px;
+  }
+  .papel-picado-bottom {
+    --papel-picado-url: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40' preserveAspectRatio='none'><path d='M0 40h80V20l-10-10-10 10-10-10-10 10-10-10-10 10-10-10-10 10v20z' fill='%23C8A04A'/></svg>");
+    background-image: var(--papel-picado-url);
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    background-size: auto 40px;
+    padding-bottom: 48px;
+  }
+
+  /* Fallback for browsers without native text-balance */
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Reduced motion: neutralize decorative animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-stir,
+  .animate-confetti-petals {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
