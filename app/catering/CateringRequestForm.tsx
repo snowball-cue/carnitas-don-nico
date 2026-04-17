@@ -630,11 +630,9 @@ export function CateringRequestForm() {
                   min={0}
                   step={0.5}
                   inputMode="decimal"
-                  /* TODO(catering-zip): replace 78758 with the real pickup
-                     ZIP once confirmed — used for the mileage placeholder. */
                   placeholder={t(
                     "catering.form.milesPlaceholder",
-                    "Approximate miles from ZIP 78758",
+                    "Approximate miles from ZIP 78640",
                   )}
                   {...form.register("deliveryMiles")}
                 />

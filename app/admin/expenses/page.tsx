@@ -4,7 +4,7 @@ import * as React from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { Plus, Download, Trash2 } from "lucide-react";
+import { Plus, Download, Trash2, Pencil } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,7 @@ import {
 import { useTranslation } from "@/lib/i18n/I18nProvider";
 import {
   createExpense,
+  updateExpense,
   deleteExpense,
   createManualRevenue,
 } from "@/app/actions/admin/expenses";
@@ -274,13 +275,17 @@ export default function AdminExpensesPage() {
                         {fmtMoney(Number(e.amount))}
                       </td>
                       <td className="p-3">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => void onDelete(e.id)}
-                        >
-                          <Trash2 className="h-4 w-4 text-chile" />
-                        </Button>
+                        <div className="flex items-center justify-end gap-1">
+                          <EditExpenseDialog expense={e} onUpdated={load} />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => void onDelete(e.id)}
+                            aria-label={t("common.delete", "Delete")}
+                          >
+                            <Trash2 className="h-4 w-4 text-chile" />
+                          </Button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -452,6 +457,150 @@ function AddExpenseDialog({ onCreated }: { onCreated: () => void }) {
               step="0.01"
               value={form.amount}
               onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => setOpen(false)}>
+            {t("common.cancel")}
+          </Button>
+          <Button onClick={submit} disabled={pending || !form.amount}>
+            {t("common.save")}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function EditExpenseDialog({
+  expense,
+  onUpdated,
+}: {
+  expense: ExpenseRow;
+  onUpdated: () => void;
+}) {
+  const { t } = useTranslation();
+  const [open, setOpen] = React.useState(false);
+  const [pending, startTransition] = React.useTransition();
+  const [form, setForm] = React.useState({
+    expense_date: expense.expense_date,
+    event_date: expense.event_date ?? "",
+    category: expense.category,
+    description: expense.description ?? "",
+    amount: String(expense.amount),
+  });
+
+  // Reset form to latest row values whenever the dialog opens
+  React.useEffect(() => {
+    if (open) {
+      setForm({
+        expense_date: expense.expense_date,
+        event_date: expense.event_date ?? "",
+        category: expense.category,
+        description: expense.description ?? "",
+        amount: String(expense.amount),
+      });
+    }
+  }, [open, expense]);
+
+  const submit = () =>
+    startTransition(async () => {
+      const r = await updateExpense(expense.id, {
+        expense_date: form.expense_date,
+        event_date: form.event_date || null,
+        category: form.category,
+        description: form.description || null,
+        amount: Number(form.amount),
+      });
+      if (r.success) {
+        toast.success(t("common.save", "Saved"));
+        setOpen(false);
+        onUpdated();
+      } else {
+        toast.error(r.error ?? t("common.error"));
+      }
+    });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={t("common.edit", "Edit")}
+        >
+          <Pencil className="h-4 w-4 text-nopal" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            {t("admin.expenses.editExpense", "Edit expense")}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label>{t("admin.expenses.col_date")}</Label>
+              <Input
+                type="date"
+                value={form.expense_date}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, expense_date: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <Label>{t("admin.expenses.eventDate")}</Label>
+              <Input
+                type="date"
+                value={form.event_date}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, event_date: e.target.value }))
+                }
+              />
+            </div>
+          </div>
+          <div>
+            <Label>{t("admin.expenses.col_category")}</Label>
+            <Select
+              value={form.category}
+              onValueChange={(v) =>
+                setForm((f) => ({ ...f, category: v as ExpenseCategory }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {CATEGORIES.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>{t("admin.expenses.col_description")}</Label>
+            <Textarea
+              rows={2}
+              value={form.description}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, description: e.target.value }))
+              }
+            />
+          </div>
+          <div>
+            <Label>{t("admin.expenses.col_amount")}</Label>
+            <Input
+              type="number"
+              step="0.01"
+              value={form.amount}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, amount: e.target.value }))
+              }
             />
           </div>
         </div>

@@ -127,7 +127,7 @@
       "dropOffNote": "Drop-off only — we don't stay to serve.",
       "milesLabel": "Distance (miles)",
       "milesHint": "First 10 mi free. After that, $2/mi.",
-      "milesPlaceholder": "Approximate miles from ZIP 78758",
+      "milesPlaceholder": "Approximate miles from ZIP 78640",
       "feeEstimate": "Estimated delivery: {{fee}}",
       "feeFree": "Free (within 10 mi)",
       "eventTimeSlot": "Pickup / delivery time",
