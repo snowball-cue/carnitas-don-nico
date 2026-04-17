@@ -16,13 +16,11 @@ function PapelPicadoSvg({
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "w-full text-oro",
+        "block w-full text-oro",
         flip ? "rotate-180" : undefined,
         className
       )}
       height={height}
-      viewBox="0 0 120 40"
-      preserveAspectRatio="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
