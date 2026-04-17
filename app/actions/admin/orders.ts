@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth/checkAdmin";
 import type { OrderStatus, PaymentMethod, PaymentStatus } from "@/types/database";
+import { sendPickupConfirmation } from "@/lib/email/orders";
 
 export type ActionResult<T = unknown> = {
   success: boolean;
@@ -39,6 +40,27 @@ export async function updateOrderStatus(
 
     const { error } = await svc.from("orders").update(patch).eq("id", orderId);
     if (error) throw error;
+
+    // When an order is marked picked_up, fire the thank-you / referral email.
+    if (status === "picked_up") {
+      try {
+        const { data: orderRow } = await svc
+          .from("orders")
+          .select("order_number")
+          .eq("id", orderId)
+          .maybeSingle();
+        const orderNumber = (orderRow as { order_number?: string } | null)
+          ?.order_number;
+        if (orderNumber) {
+          await sendPickupConfirmation(orderNumber);
+        }
+      } catch (emailErr) {
+        console.error(
+          "[admin/orders.updateOrderStatus] sendPickupConfirmation failed:",
+          emailErr,
+        );
+      }
+    }
 
     revalidatePath("/admin");
     revalidatePath("/admin/orders");

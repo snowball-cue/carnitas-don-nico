@@ -12,6 +12,7 @@ import type {
   PaymentStatus,
 } from "@/types/database";
 import type { CartLine } from "@/lib/stores/cart";
+import { sendOrderReceipt } from "@/lib/email/orders";
 
 export interface CreateOrderInput {
   cart: CartLine[];
@@ -165,6 +166,17 @@ export async function createOrder(
 
     const { error: itemsErr } = await db.from("order_items").insert(itemsInsert);
     if (itemsErr) throw itemsErr;
+
+    // Fire the order-receipt email. Non-blocking on error — we never fail an
+    // order because an email couldn't go out.
+    try {
+      await sendOrderReceipt(order.order_number);
+    } catch (emailErr) {
+      console.error(
+        "[orders.createOrder] sendOrderReceipt failed:",
+        emailErr,
+      );
+    }
 
     return {
       success: true,
