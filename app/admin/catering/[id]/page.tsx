@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
-import { ArrowLeft, Mail, Phone } from "lucide-react";
+import { ArrowLeft, Calendar, Mail, Phone } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -54,7 +54,17 @@ export default async function AdminCateringDetailPage({ params }: PageProps) {
             Submitted {format(new Date(req.created_at), "PPp")}
           </p>
         </div>
-        <Badge variant="oro">{req.status}</Badge>
+        <div className="flex items-center gap-2">
+          <a
+            href={`/api/catering/${req.id}/ics`}
+            className="inline-flex items-center gap-1.5 rounded-md border border-nopal/30 bg-nopal/5 px-3 py-1.5 text-sm font-medium text-nopal hover:bg-nopal/10"
+            download={`CarnitasDonNico-${reference}.ics`}
+          >
+            <Calendar className="h-4 w-4" />
+            Download .ics
+          </a>
+          <Badge variant="oro">{req.status}</Badge>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">

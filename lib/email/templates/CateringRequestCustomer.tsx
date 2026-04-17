@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
   Body,
+  Button,
   Container,
   Head,
   Heading,
@@ -11,18 +12,21 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { brand, getAppUrl, type Locale } from "./_shared";
+import { brand, formatPickupDate, formatTime, getAppUrl, type Locale } from "./_shared";
 
 export interface CateringRequestCustomerProps {
   locale: Locale;
   reference: string;
   customerName: string;
   eventDate: string; // YYYY-MM-DD
+  eventTimeSlot?: "12:00" | "16:00" | null;
   guestCount: number;
   estimatedLbs: number;
   eventType: string | null;
   includesSides: boolean;
   deliveryNeeded: boolean;
+  /** Link to download the .ics calendar file (triggers the attachment route). */
+  calendarLink?: string;
 }
 
 const copy = {
@@ -33,6 +37,8 @@ const copy = {
     intro:
       "Don Nico will personally text or email you within 24 hours to plan the details, confirm pricing, and lock in your date. Big events take a little coordination — we want to get it right.",
     refLabel: "Your reference",
+    whenLabel: "When",
+    timeTBD: "Time to be confirmed",
     detailsLabel: "What you asked for",
     date: "Event date",
     guests: "Guests",
@@ -45,6 +51,8 @@ const copy = {
     whatsNextLabel: "What happens next",
     whatsNext:
       "1. Don Nico reviews your request. 2. You'll get a call, text, or email to go over cuts, pricing, and logistics. 3. Once confirmed, we'll send a final quote and save your date.",
+    addToCalendar: "Add to calendar",
+    addToCalendarHint: "Includes reminders 7 days and 24 hours before.",
     signoff: "— Don Nico",
     footer:
       "Carnitas Don Nico · Reply to this email anytime — we read every message.",
@@ -57,6 +65,8 @@ const copy = {
     intro:
       "Don Nico te va a llamar, enviar mensaje o correo personalmente en menos de 24 horas para planear los detalles, confirmar el precio y apartar tu fecha. Los eventos grandes necesitan un poquito de coordinación — queremos que todo salga perfecto.",
     refLabel: "Tu referencia",
+    whenLabel: "Cuándo",
+    timeTBD: "Horario por confirmar",
     detailsLabel: "Lo que pediste",
     date: "Fecha del evento",
     guests: "Invitados",
@@ -69,6 +79,8 @@ const copy = {
     whatsNextLabel: "Qué sigue",
     whatsNext:
       "1. Don Nico revisa tu solicitud. 2. Te contactamos por llamada, mensaje o correo para ver cortes, precio y logística. 3. Una vez confirmado, te mandamos la cotización final y apartamos tu fecha.",
+    addToCalendar: "Agregar al calendario",
+    addToCalendarHint: "Incluye recordatorios 7 días y 24 horas antes.",
     signoff: "— Don Nico",
     footer:
       "Carnitas Don Nico · Responde este correo cuando quieras — leemos todos los mensajes.",
@@ -117,6 +129,27 @@ export default function CateringRequestCustomer(
 
             <Text style={styles.sectionLabel}>{t.refLabel}</Text>
             <Text style={styles.refValue}>{props.reference}</Text>
+
+            <Hr style={styles.hr} />
+
+            <Text style={styles.sectionLabel}>{t.whenLabel}</Text>
+            <Text style={styles.whenPrimary}>
+              {formatPickupDate(props.eventDate, props.locale)}
+            </Text>
+            <Text style={styles.whenSecondary}>
+              {props.eventTimeSlot
+                ? formatTime(`${props.eventTimeSlot}:00`, props.locale)
+                : t.timeTBD}
+            </Text>
+
+            {props.calendarLink ? (
+              <Section style={styles.ctaWrap}>
+                <Button href={props.calendarLink} style={styles.ctaBtn}>
+                  {t.addToCalendar}
+                </Button>
+                <Text style={styles.ctaHint}>{t.addToCalendarHint}</Text>
+              </Section>
+            ) : null}
 
             <Hr style={styles.hr} />
 
@@ -231,6 +264,38 @@ const styles: Record<string, React.CSSProperties> = {
     display: "table-cell",
     textAlign: "right" as const,
     whiteSpace: "nowrap" as const,
+  },
+  whenPrimary: {
+    color: brand.mole,
+    fontSize: "18px",
+    fontWeight: 700,
+    margin: "0 0 2px",
+  },
+  whenSecondary: {
+    color: brand.mole,
+    fontSize: "15px",
+    margin: 0,
+  },
+  ctaWrap: {
+    textAlign: "center" as const,
+    margin: "16px 0 4px",
+  },
+  ctaBtn: {
+    backgroundColor: brand.nopal,
+    color: brand.papel,
+    padding: "12px 20px",
+    borderRadius: "8px",
+    fontSize: "14px",
+    fontWeight: 700,
+    letterSpacing: "0.5px",
+    textDecoration: "none",
+    display: "inline-block",
+  },
+  ctaHint: {
+    color: brand.textMuted,
+    fontSize: "12px",
+    margin: "8px 0 0",
+    textAlign: "center" as const,
   },
   signoff: {
     color: brand.mole,

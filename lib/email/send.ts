@@ -14,6 +14,16 @@ const DEFAULT_REPLY_TO = "carnitasdonnico25@gmail.com";
  */
 const RESEND_ACCOUNT_EMAIL = "eryk.buiii@gmail.com";
 
+export interface SendEmailAttachment {
+  /** File name shown to the recipient, e.g. "CarnitasDonNico-CAT-ABC123.ics". */
+  filename: string;
+  /**
+   * Attachment bytes. Resend's SDK accepts either a base64-encoded string
+   * or a Buffer here — we forward whatever the caller passes through.
+   */
+  content: string | Buffer;
+}
+
 export interface SendEmailArgs {
   to: string | string[];
   subject: string;
@@ -21,6 +31,8 @@ export interface SendEmailArgs {
   replyTo?: string;
   cc?: string | string[];
   bcc?: string | string[];
+  /** Optional file attachments (e.g. .ics calendar invites, PDFs). */
+  attachments?: SendEmailAttachment[];
 }
 
 export interface SendEmailResult {
@@ -89,6 +101,12 @@ export async function sendEmail(
       replyTo,
       cc: ccList.length ? ccList : undefined,
       bcc: bccList.length ? bccList : undefined,
+      attachments: args.attachments && args.attachments.length > 0
+        ? args.attachments.map((a) => ({
+            filename: a.filename,
+            content: a.content,
+          }))
+        : undefined,
     });
 
     if (error) {

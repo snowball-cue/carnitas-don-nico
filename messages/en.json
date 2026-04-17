@@ -177,6 +177,10 @@
       "title": "Got it!",
       "body": "Don Nico will text or email you within 24 hours to plan your event.",
       "hint": "Save this reference — keep it handy for quick questions."
+    },
+    "email": {
+      "addToCalendar": "Add to calendar",
+      "addToCalendarHint": "Includes reminders 7 days and 24 hours before."
     }
   },
   "menu": {
@@ -544,6 +548,7 @@
       "customTimeRequested": "Custom time requested",
       "deliveryMiles": "Distance",
       "deliveryMilesValue": "{{miles}} mi ({{fee}})",
+      "downloadIcs": "Download .ics",
       "status": {
         "new": "New",
         "contacted": "Contacted",

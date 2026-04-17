@@ -10,9 +10,11 @@ import { sendEmail } from "@/lib/email/send";
 import CateringRequestOwner from "@/lib/email/templates/CateringRequestOwner";
 import CateringRequestCustomer from "@/lib/email/templates/CateringRequestCustomer";
 import { getAppUrl, type Locale } from "@/lib/email/templates/_shared";
+import { generateCateringIcs } from "@/lib/ics";
 import type { CateringRequestRow } from "@/types/database";
 
 const OWNER_EMAIL_FALLBACK = "carnitasdonnico25@gmail.com";
+const PICKUP_ADDRESS_FALLBACK = "379 Nottingham Loop, Kyle, TX 78640";
 
 const inputSchema = z.object({
   fullName: z.string().trim().min(1),
@@ -188,6 +190,23 @@ export async function submitCateringRequest(
     }
 
     try {
+      const pickupAddress =
+        process.env.NEXT_PUBLIC_PICKUP_ADDRESS || PICKUP_ADDRESS_FALLBACK;
+      const calendarLink = `${appUrl}/api/catering/${row.id}/ics`;
+      const icsString = generateCateringIcs({
+        uid: row.id,
+        reference,
+        eventDate: data.eventDate,
+        timeSlot: slotToInsert,
+        guestCount: data.guestCount,
+        estimatedLbs: data.estimatedLbs,
+        deliveryNeeded: data.deliveryNeeded,
+        eventLocation: data.eventLocation ?? null,
+        pickupAddress,
+        customerName: data.fullName,
+        summaryLocale: locale,
+      });
+
       await sendEmail({
         to: data.email,
         subject:
@@ -197,13 +216,21 @@ export async function submitCateringRequest(
           reference,
           customerName: data.fullName,
           eventDate: data.eventDate,
+          eventTimeSlot: slotToInsert,
           guestCount: data.guestCount,
           estimatedLbs: data.estimatedLbs,
           eventType: data.eventType ?? null,
           includesSides: data.includesSides,
           deliveryNeeded: data.deliveryNeeded,
+          calendarLink,
         }),
         bcc: owner,
+        attachments: [
+          {
+            filename: `CarnitasDonNico-${reference}.ics`,
+            content: Buffer.from(icsString, "utf-8").toString("base64"),
+          },
+        ],
       });
     } catch (e) {
       console.error("[catering] customer email failed:", e);

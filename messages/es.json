@@ -177,6 +177,10 @@
       "title": "¡Listo!",
       "body": "Don Nico te va a mandar mensaje o correo en menos de 24 horas para planear tu evento.",
       "hint": "Guarda esta referencia — tenla a la mano para cualquier duda."
+    },
+    "email": {
+      "addToCalendar": "Agregar al calendario",
+      "addToCalendarHint": "Incluye recordatorios 7 días y 24 horas antes."
     }
   },
   "menu": {
@@ -544,6 +548,7 @@
       "customTimeRequested": "Horario a la medida solicitado",
       "deliveryMiles": "Distancia",
       "deliveryMilesValue": "{{miles}} mi ({{fee}})",
+      "downloadIcs": "Descargar .ics",
       "status": {
         "new": "Nuevo",
         "contacted": "Contactado",

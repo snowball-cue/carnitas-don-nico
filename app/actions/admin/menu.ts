@@ -65,7 +65,16 @@ export async function upsertMenuItem(
       .insert(row)
       .select("id")
       .single();
-    if (error) throw error;
+    if (error) {
+      const pgCode = (error as { code?: string }).code;
+      if (pgCode === "23505") {
+        return {
+          success: false,
+          error: `Slug "${input.slug}" is already used by another menu item. Pick a different slug.`,
+        };
+      }
+      throw error;
+    }
     revalidatePath("/admin/menu");
     revalidatePath("/menu");
     return { success: true, data: { id: data.id } };
