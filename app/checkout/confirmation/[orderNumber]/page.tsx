@@ -177,6 +177,27 @@ export default async function ConfirmationPage({
           trackUrl={trackUrl}
         />
 
+        {/* Pickup address */}
+        <div className="mt-8 rounded-lg border-2 border-oro/50 bg-oro/10 p-5">
+          <h3 className="font-display text-lg font-semibold text-mole">
+            Dirección de recogida / Pickup address
+          </h3>
+          <p className="mt-2 font-display text-xl text-mole">
+            {process.env.NEXT_PUBLIC_PICKUP_ADDRESS ||
+              "379 Nottingham Loop, Kyle, TX 78640"}
+          </p>
+          {process.env.NEXT_PUBLIC_PICKUP_LOCATION_URL ? (
+            <a
+              href={process.env.NEXT_PUBLIC_PICKUP_LOCATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-block text-sm text-nopal underline"
+            >
+              Open in Google Maps →
+            </a>
+          ) : null}
+        </div>
+
         {/* Pickup instructions */}
         <div className="mt-8 rounded-lg border border-nopal/10 bg-papel-warm/50 p-5">
           <h3 className="font-display text-lg font-semibold text-mole">

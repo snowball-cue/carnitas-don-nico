@@ -42,6 +42,20 @@ export function LandingHowItWorks() {
             </li>
           ))}
         </ol>
+        <div className="mt-12 text-center">
+          <p className="text-xs uppercase tracking-widest text-mole/60">
+            {t("landing.pickupArea.label", "Pickup area")}
+          </p>
+          <p className="font-display text-lg text-mole mt-1">
+            {process.env.NEXT_PUBLIC_PICKUP_AREA || "Kyle, Texas 78640"}
+          </p>
+          <p className="text-xs text-mole/60 mt-1">
+            {t(
+              "landing.pickupArea.hint",
+              "Full address shared after you place your order.",
+            )}
+          </p>
+        </div>
       </div>
     </section>
   );

@@ -149,6 +149,11 @@ export default function OrderReceipt(props: OrderReceiptProps) {
                 {formatTime(props.pickupWindowEnd, props.locale)}
               </Text>
             ) : null}
+            <Text style={styles.pickupAddress}>
+              📍{" "}
+              {process.env.NEXT_PUBLIC_PICKUP_ADDRESS ||
+                "379 Nottingham Loop, Kyle, TX 78640"}
+            </Text>
 
             <Hr style={styles.hr} />
 
@@ -324,6 +329,12 @@ const styles: Record<string, React.CSSProperties> = {
     color: brand.textMuted,
     fontSize: "14px",
     margin: "0",
+  },
+  pickupAddress: {
+    color: brand.mole,
+    fontSize: "14px",
+    fontWeight: 600,
+    margin: "6px 0 0",
   },
   itemRow: {
     display: "table",
