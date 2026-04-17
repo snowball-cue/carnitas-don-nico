@@ -87,9 +87,8 @@ export function Header() {
 
         {/* Right: language + cart + auth */}
         <div className="flex items-center gap-2 md:gap-3">
-          <div className="hidden md:block">
-            <LanguageToggle size="sm" />
-          </div>
+          {/* Language toggle — always visible on both mobile and desktop */}
+          <LanguageToggle size="sm" />
 
           <Link
             href="/cart"
@@ -128,7 +127,7 @@ export function Header() {
                   <DropdownMenuLabel>{displayName}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/profile">
+                    <Link href="/account">
                       <UserIcon className="mr-2 h-4 w-4" />
                       {t("nav.profile")}
                     </Link>
@@ -148,7 +147,7 @@ export function Header() {
               </DropdownMenu>
             ) : (
               <Button asChild variant="oro" size="sm">
-                <Link href="/sign-in">{t("nav.signIn")}</Link>
+                <Link href="/login">{t("nav.signIn")}</Link>
               </Button>
             )}
           </div>
@@ -182,7 +181,6 @@ export function Header() {
                   ))}
               </nav>
               <div className="mt-auto space-y-3 border-t border-nopal/10 pt-4">
-                <LanguageToggle className="bg-nopal" />
                 {user ? (
                   <Button
                     variant="outline"
@@ -197,7 +195,7 @@ export function Header() {
                   </Button>
                 ) : (
                   <Button asChild variant="oro" className="w-full">
-                    <Link href="/sign-in" onClick={() => setMobileOpen(false)}>
+                    <Link href="/login" onClick={() => setMobileOpen(false)}>
                       {t("nav.signIn")}
                     </Link>
                   </Button>

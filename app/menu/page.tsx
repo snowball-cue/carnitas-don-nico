@@ -9,6 +9,7 @@ import type {
   MenuItemVariantRow,
 } from "@/types/database";
 import { MenuPickupBanner } from "./MenuPickupBanner";
+import { MenuHeroTitle } from "./MenuHeroTitle";
 
 export const revalidate = 60;
 
@@ -90,16 +91,7 @@ export default async function MenuPage() {
       {/* Hero band */}
       <section className="w-full bg-nopal text-papel">
         <div className="mx-auto max-w-6xl px-4 py-12 md:py-16 text-center">
-          <h1 className="font-display text-4xl font-bold leading-tight md:text-5xl">
-            Nuestro Menú
-            <span className="block text-oro text-2xl md:text-3xl mt-1">
-              Our Menu
-            </span>
-          </h1>
-          <p className="mt-3 text-papel/80 max-w-2xl mx-auto">
-            Cerdo cocido a fuego lento · Slow-cooked pork, mixed cuts, and
-            agua-frescas made fresh for pickup.
-          </p>
+          <MenuHeroTitle />
         </div>
       </section>
 

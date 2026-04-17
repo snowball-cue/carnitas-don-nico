@@ -128,7 +128,7 @@ export default function CartPage() {
               <li key={l.id} className="flex gap-4 p-4">
                 <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md bg-papel">
                   <Image
-                    src="/brand/placeholder-menu.png"
+                    src="/brand/placeholder-menu.svg"
                     alt={name}
                     fill
                     sizes="80px"
@@ -336,7 +336,7 @@ export default function CartPage() {
           <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">
             <Button asChild variant="outline">
               <Link
-                href={`/auth/sign-in?next=${encodeURIComponent(
+                href={`/login?redirect=${encodeURIComponent(
                   `/checkout?tip=${tipAmount.toFixed(2)}`
                 )}`}
               >

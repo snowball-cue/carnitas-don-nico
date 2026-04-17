@@ -62,12 +62,12 @@ export default function CheckoutPage() {
     },
   });
 
-  // Redirect if cart empty
+  // Redirect if cart empty (but not if we just submitted — lines are cleared post-submit)
   React.useEffect(() => {
-    if (!loadingUser && lines.length === 0) {
+    if (!loadingUser && lines.length === 0 && !submitting) {
       router.replace("/menu");
     }
-  }, [lines.length, loadingUser, router]);
+  }, [lines.length, loadingUser, router, submitting]);
 
   React.useEffect(() => {
     if (!loadingUser && !user) {

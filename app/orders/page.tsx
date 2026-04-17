@@ -14,7 +14,7 @@ export default async function OrdersPage() {
   const db = await createServerSupabaseClient();
   const { data: authRes } = await db.auth.getUser();
   if (!authRes.user) {
-    redirect("/auth/sign-in?next=/orders");
+    redirect("/login?redirect=/orders");
   }
 
   const { data } = await db

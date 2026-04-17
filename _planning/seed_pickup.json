@@ -1,0 +1,4 @@
+[
+  {"pickup_date":"2026-04-25","pickup_window_start":"11:00","pickup_window_end":"14:00","capacity_lbs":50,"cutoff_at":"2026-04-24T18:00:00-05:00","is_open":true,"notes_en":"Founders cook — first pickup","notes_es":"Primera cocinada de Don Nico"},
+  {"pickup_date":"2026-05-02","pickup_window_start":"11:00","pickup_window_end":"14:00","capacity_lbs":80,"cutoff_at":"2026-05-01T18:00:00-05:00","is_open":true,"notes_en":null,"notes_es":null}
+]

@@ -1,6 +1,7 @@
 import { PapelPicadoTop } from "@/components/brand/PapelPicado";
 import { getOpenPickupDates } from "@/app/actions/pickup";
 import { PickupPicker } from "./PickupPicker";
+import { PickupHeroTitle } from "./PickupHeroTitle";
 import type { PickupDate } from "@/components/pickup/PickupDateTile";
 
 export const revalidate = 30;
@@ -24,16 +25,7 @@ export default async function PickupPage() {
     <div className="bg-papel min-h-screen">
       <section className="w-full bg-nopal text-papel">
         <div className="mx-auto max-w-5xl px-4 py-12 md:py-16 text-center">
-          <h1 className="font-display text-4xl md:text-5xl font-bold">
-            Fechas de Pickup
-            <span className="block text-oro text-2xl md:text-3xl mt-1">
-              Pickup Dates
-            </span>
-          </h1>
-          <p className="mt-3 text-papel/80 max-w-2xl mx-auto">
-            Elige el sábado que mejor te quede · Pick the Saturday that works
-            best.
-          </p>
+          <PickupHeroTitle />
         </div>
       </section>
 

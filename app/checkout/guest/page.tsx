@@ -53,8 +53,8 @@ export default function GuestCheckoutPage() {
   });
 
   React.useEffect(() => {
-    if (lines.length === 0) router.replace("/menu");
-  }, [lines.length, router]);
+    if (lines.length === 0 && !submitting) router.replace("/menu");
+  }, [lines.length, router, submitting]);
 
   React.useEffect(() => {
     let active = true;

@@ -46,7 +46,7 @@ export default function AccountPage() {
   }, [profile?.id]);
 
   React.useEffect(() => {
-    if (!isLoading && !user) router.replace("/auth/sign-in?next=/account");
+    if (!isLoading && !user) router.replace("/login?redirect=/account");
   }, [isLoading, user, router]);
 
   const referralCode = p.referral_code ?? "";

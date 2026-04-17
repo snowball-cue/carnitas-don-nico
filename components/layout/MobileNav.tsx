@@ -42,10 +42,10 @@ const TABS: TabDef[] = [
     match: (p) => p.startsWith("/orders"),
   },
   {
-    href: "/profile",
+    href: "/account",
     icon: UserIcon,
     labelKey: "nav.profile",
-    match: (p) => p.startsWith("/profile") || p.startsWith("/account"),
+    match: (p) => p.startsWith("/account"),
   },
 ];
 
