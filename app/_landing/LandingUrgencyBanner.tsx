@@ -44,7 +44,7 @@ export function LandingUrgencyBanner({ pickup }: LandingUrgencyBannerProps) {
           </p>
         </div>
         {!soldOut ? (
-          <Button asChild size="sm" variant="nopal">
+          <Button asChild size="sm" variant="default">
             <Link href="/menu">{t("landing.urgency.reserveNow")}</Link>
           </Button>
         ) : null}

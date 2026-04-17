@@ -7,9 +7,10 @@ import { Footer } from "@/components/layout/Footer";
 import { MobileNav } from "@/components/layout/MobileNav";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+
 const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
   axes: ["SOFT", "WONK", "opsz"],
   display: "swap",
   variable: "--font-display",
