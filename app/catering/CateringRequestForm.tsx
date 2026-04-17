@@ -19,6 +19,9 @@ const schema = z.object({
   email: z.string().email(),
   phone: z.string().min(7),
   eventDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date"),
+  eventTimeSlot: z.enum(["12:00", "16:00"], {
+    errorMap: () => ({ message: "Pick a time slot" }),
+  }),
   guestCount: z.coerce.number().int().min(10, "Minimum 10 guests"),
   estimatedLbs: z.coerce.number().min(10, "Minimum 10 lbs"),
   eventType: z.string().optional().or(z.literal("")),
@@ -55,6 +58,7 @@ export function CateringRequestForm() {
       email: "",
       phone: "",
       eventDate: "",
+      eventTimeSlot: "12:00",
       guestCount: 10,
       estimatedLbs: 10,
       eventType: "",
@@ -77,6 +81,7 @@ export function CateringRequestForm() {
         email: data.email,
         phone: data.phone,
         eventDate: data.eventDate,
+        eventTimeSlot: data.eventTimeSlot,
         guestCount: Number(data.guestCount),
         estimatedLbs: Number(data.estimatedLbs),
         eventType: data.eventType || null,
@@ -211,6 +216,49 @@ export function CateringRequestForm() {
             {form.formState.errors.eventDate && (
               <p className="mt-1 text-xs text-chile">
                 {form.formState.errors.eventDate.message}
+              </p>
+            )}
+          </div>
+
+          {/* Event time slot */}
+          <div>
+            <Label>
+              {t("catering.form.eventTimeSlot", "Pickup / delivery time")} *
+            </Label>
+            <div className="mt-1.5 grid grid-cols-2 gap-2">
+              {(["12:00", "16:00"] as const).map((slot) => {
+                const selected = form.watch("eventTimeSlot") === slot;
+                const label =
+                  slot === "12:00"
+                    ? t("catering.form.slotNoon", "12:00 PM")
+                    : t("catering.form.slot4pm", "4:00 PM");
+                return (
+                  <button
+                    type="button"
+                    key={slot}
+                    onClick={() => form.setValue("eventTimeSlot", slot)}
+                    className={
+                      "rounded-md border px-3 py-2 text-sm font-medium transition-colors " +
+                      (selected
+                        ? "border-oro bg-oro text-mole"
+                        : "border-nopal/20 bg-papel text-mole hover:bg-papel-warm")
+                    }
+                    aria-pressed={selected}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-1 text-xs text-mole/60">
+              {t(
+                "catering.form.eventTimeHint",
+                "Two slots daily: noon or 4:00 PM.",
+              )}
+            </p>
+            {form.formState.errors.eventTimeSlot && (
+              <p className="mt-1 text-xs text-chile">
+                {form.formState.errors.eventTimeSlot.message}
               </p>
             )}
           </div>

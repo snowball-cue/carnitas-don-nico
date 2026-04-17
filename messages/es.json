@@ -122,7 +122,11 @@
       "includesSides": "¿Con acompañamientos?",
       "includesSidesHint": "Tortillas, salsas, pico de gallo, cebolla, cilantro y limones.",
       "deliveryNeeded": "¿Necesitas entrega?",
-      "deliveryNeededHint": "Sí = te lo llevamos. No = pasas a recogerlo.",
+      "deliveryNeededHint": "El costo depende de la distancia — normalmente $25 (menos de 10 mi), $45 (10–20 mi), $75 (20–30 mi). Más de 30 mi se cotiza aparte.",
+      "eventTimeSlot": "Hora de recolección / entrega",
+      "eventTimeHint": "Dos horarios al día: 12:00 PM o 4:00 PM.",
+      "slotNoon": "12:00 PM",
+      "slot4pm": "4:00 PM",
       "notes": "¿Algo más?",
       "notesPlaceholder": "Horarios, restricciones, alergias, peticiones especiales...",
       "submit": "Enviar solicitud"

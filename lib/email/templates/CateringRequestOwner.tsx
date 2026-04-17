@@ -19,6 +19,7 @@ export interface CateringRequestOwnerProps {
   email: string;
   phone: string;
   eventDate: string;
+  eventTimeSlot?: "12:00" | "16:00";
   guestCount: number;
   estimatedLbs: number;
   eventType: string | null;
@@ -68,6 +69,9 @@ export default function CateringRequestOwner(props: CateringRequestOwnerProps) {
 
             <Text style={styles.sectionLabel}>Event</Text>
             {row("Date", props.eventDate)}
+            {props.eventTimeSlot
+              ? row("Time", props.eventTimeSlot === "12:00" ? "12:00 PM" : "4:00 PM")
+              : null}
             {row("Guests", String(props.guestCount))}
             {row("Estimated lbs", `${props.estimatedLbs} lb`)}
             {props.eventType ? row("Event type", props.eventType) : null}

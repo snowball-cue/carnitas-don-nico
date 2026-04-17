@@ -374,6 +374,7 @@ export interface CateringRequestRow {
   email: string;
   phone: string;
   event_date: DateString;
+  event_time_slot: "12:00" | "16:00";
   guest_count: number;
   estimated_lbs: number;
   event_type: string | null;

@@ -19,6 +19,7 @@ const inputSchema = z.object({
   email: z.string().trim().email(),
   phone: z.string().trim().min(7),
   eventDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date"),
+  eventTimeSlot: z.enum(["12:00", "16:00"]).default("12:00"),
   guestCount: z
     .number()
     .int()
@@ -79,6 +80,7 @@ export async function submitCateringRequest(
         email: data.email,
         phone: data.phone,
         event_date: data.eventDate,
+        event_time_slot: data.eventTimeSlot,
         guest_count: data.guestCount,
         estimated_lbs: data.estimatedLbs,
         event_type: data.eventType ?? null,
@@ -114,6 +116,7 @@ export async function submitCateringRequest(
           email: data.email,
           phone: data.phone,
           eventDate: data.eventDate,
+          eventTimeSlot: data.eventTimeSlot,
           guestCount: data.guestCount,
           estimatedLbs: data.estimatedLbs,
           eventType: data.eventType ?? null,

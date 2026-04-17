@@ -122,7 +122,11 @@
       "includesSides": "Include sides?",
       "includesSidesHint": "Tortillas, salsas, pico de gallo, cebolla, cilantro, limes.",
       "deliveryNeeded": "Delivery needed?",
-      "deliveryNeededHint": "Yes = we deliver. No = you pick up.",
+      "deliveryNeededHint": "Delivery fee is based on distance — usually $25 (under 10 mi), $45 (10–20 mi), $75 (20–30 mi). 30+ mi quoted case by case.",
+      "eventTimeSlot": "Pickup / delivery time",
+      "eventTimeHint": "Two slots daily: 12:00 PM or 4:00 PM.",
+      "slotNoon": "12:00 PM",
+      "slot4pm": "4:00 PM",
       "notes": "Anything else?",
       "notesPlaceholder": "Timing, dietary restrictions, allergies, special requests...",
       "submit": "Send request"
