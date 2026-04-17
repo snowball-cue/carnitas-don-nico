@@ -54,6 +54,9 @@ export function MobileNav() {
   const { t } = useTranslation();
   const itemCount = useCartStore((s) => s.lines.length);
 
+  // Hide the customer-side mobile tab bar inside admin routes.
+  if (pathname.startsWith("/admin")) return null;
+
   return (
     <nav
       className={cn(

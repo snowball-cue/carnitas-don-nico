@@ -7,6 +7,7 @@ import { LandingHero } from "./_landing/LandingHero";
 import { LandingFeatures } from "./_landing/LandingFeatures";
 import { LandingHowItWorks } from "./_landing/LandingHowItWorks";
 import { LandingUrgencyBanner } from "./_landing/LandingUrgencyBanner";
+import { LandingCateringBanner } from "./_landing/LandingCateringBanner";
 
 export const revalidate = 60;
 
@@ -39,6 +40,7 @@ export default async function LandingPage() {
       {nextPickup ? <LandingUrgencyBanner pickup={nextPickup} /> : null}
       <LandingFeatures />
       <LandingHowItWorks />
+      <LandingCateringBanner />
     </div>
   );
 }

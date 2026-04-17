@@ -29,6 +29,7 @@
     "home": "Inicio",
     "menu": "Menú",
     "pickup": "Recolección",
+    "catering": "Catering",
     "cart": "Carrito",
     "orders": "Mis Pedidos",
     "account": "Cuenta",
@@ -65,6 +66,99 @@
       "lbsRemaining": "{{lbs}} lbs disponibles",
       "soldOut": "Agotado",
       "reserveNow": "Reserva ahora"
+    },
+    "catering": {
+      "title": "¿Más de 10 personas? Tenemos catering.",
+      "body": "Quinceañeras, bodas, comidas del trabajo, reuniones familiares — el cazo de Don Nico se encarga.",
+      "cta": "Ver catering"
+    }
+  },
+  "catering": {
+    "heroTitle": "Catering / Banquetes",
+    "heroSubtitle": "Alimenta a tu gente con nuestro cazo — carnitas a fuego lento para eventos de 10 o más.",
+    "heroCta": "Pedir cotización",
+    "features": {
+      "minTitle": "Mínimo 10 libras",
+      "minBody": "El catering empieza en 10 lbs — suficiente para unos 20 comensales con hambre.",
+      "leadTitle": "Planea con 1 semana",
+      "leadBody": "Cocinamos al pedido. Con una semana de aviso todo llega fresquecito y a tiempo.",
+      "packageTitle": "Acompañamientos opcionales, empaque incluido",
+      "packageBody": "Agrega tortillas, salsas y pico — o sólo las carnitas. Siempre con empaque bilingüe."
+    },
+    "howItWorks": {
+      "title": "Cómo funciona el catering",
+      "step1Title": "Cuéntanos de tu evento",
+      "step1Body": "Llena el formulario rapidito con la fecha, número de invitados y el ambiente.",
+      "step2Title": "Don Nico te contacta",
+      "step2Body": "En menos de 24 horas — por teléfono, mensaje o correo — para confirmar cortes, precio y logística.",
+      "step3Title": "Disfruta con tu gente",
+      "step3Body": "Recoges o te lo llevamos el día del evento. Las carnitas llegan calientitas, con acompañamientos si los pediste."
+    },
+    "form": {
+      "title": "Pedir cotización",
+      "subtitle": "Cuéntanos de tu evento — te contestamos por mensaje o correo en menos de 24 horas.",
+      "fullName": "Nombre completo",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "eventDate": "Fecha del evento",
+      "eventDateHint": "Mínimo 3 días a partir de hoy.",
+      "guestCount": "Número de invitados",
+      "estimatedLbs": "Libras estimadas",
+      "estimatedLbsHint": "Regla de dedo: como 1/2 lb por persona, más si son buenos para comer.",
+      "eventType": "Tipo de evento",
+      "eventTypePlaceholder": "ej. Boda, Quinceañera",
+      "eventTypes": {
+        "wedding": "Boda",
+        "quinceanera": "Quinceañera",
+        "corporate": "Corporativo",
+        "graduation": "Graduación",
+        "birthday": "Cumpleaños",
+        "other": "Otro"
+      },
+      "eventLocation": "Lugar del evento",
+      "eventLocationPlaceholder": "Dirección o sólo la ciudad — los detalles los vemos después.",
+      "cutsPreference": "Cortes preferidos",
+      "cutsPreferencePlaceholder": "Maciza, Surtido, mezcla — o deja que Don Nico decida",
+      "includesSides": "¿Con acompañamientos?",
+      "includesSidesHint": "Tortillas, salsas, pico de gallo, cebolla, cilantro y limones.",
+      "deliveryNeeded": "¿Necesitas entrega?",
+      "deliveryNeededHint": "Sí = te lo llevamos. No = pasas a recogerlo.",
+      "notes": "¿Algo más?",
+      "notesPlaceholder": "Horarios, restricciones, alergias, peticiones especiales...",
+      "submit": "Enviar solicitud"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "subtitle": "Si no ves tu duda aquí, déjala en el recuadro de notas del formulario.",
+      "howFar": {
+        "q": "¿Con cuánto tiempo debo reservar?",
+        "a": "Una semana es lo ideal — los eventos grandes necesitan días para conseguir la carne y prepararla. A veces podemos acomodar pedidos rápidos, pero entre más pronto, mejor."
+      },
+      "travel": {
+        "q": "¿Van hasta dónde? ¿Cuál es su zona de entrega?",
+        "a": "Sí, dentro de nuestra zona local. Activa la entrega en el formulario y dinos dónde — te cotizamos el viaje."
+      },
+      "bulk": {
+        "q": "¿Hay descuentos por volumen?",
+        "a": "Para eventos muy grandes (50+ lbs) normalmente podemos darte un precio de mayoreo. Menciónalo en las notas y Don Nico lo toma en cuenta."
+      },
+      "whatsIncluded": {
+        "q": "¿Qué viene incluido por defecto?",
+        "a": "Sólo las carnitas, vendidas por libra. Las tortillas, salsas y acompañamientos son un extra sencillo — activa el switch de 'Con acompañamientos'."
+      },
+      "deposit": {
+        "q": "¿Piden anticipo?",
+        "a": "Para eventos de catering confirmados, sí — te avisamos el monto cuando te cotizamos. Eso aparta tu fecha."
+      },
+      "cancellations": {
+        "q": "¿Qué pasa si necesito cancelar?",
+        "a": "Avísanos lo antes posible. Si cancelas con más de 72 horas de anticipación normalmente no hay problema."
+      }
+    },
+    "success": {
+      "title": "¡Listo!",
+      "body": "Don Nico te va a mandar mensaje o correo en menos de 24 horas para planear tu evento.",
+      "hint": "Guarda esta referencia — tenla a la mano para cualquier duda."
     }
   },
   "menu": {
@@ -309,6 +403,7 @@
     "nav": {
       "dashboard": "Panel de control",
       "orders": "Pedidos",
+      "catering": "Catering",
       "calendar": "Calendario",
       "menu": "Menú",
       "expenses": "P&G / Gastos",
@@ -317,6 +412,25 @@
       "receipts": "Recibos",
       "notifications": "Notificaciones",
       "customers": "Clientes"
+    },
+    "catering": {
+      "title": "Solicitudes de catering",
+      "statusLabel": "Estado",
+      "statusUpdated": "Estado actualizado",
+      "quotedPrice": "Precio cotizado",
+      "quoteSaved": "Cotización guardada",
+      "notes": "Notas",
+      "notesPlaceholder": "Notas internas, peticiones especiales, registro de llamadas...",
+      "notesSaved": "Notas guardadas",
+      "invalidAmount": "Monto inválido",
+      "status": {
+        "new": "Nuevo",
+        "contacted": "Contactado",
+        "quoted": "Cotizado",
+        "confirmed": "Confirmado",
+        "completed": "Completado",
+        "cancelled": "Cancelado"
+      }
     },
     "dashboard": {
       "title": "Panel de control",

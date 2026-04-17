@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Menu as MenuIcon, ShoppingBag, User as UserIcon, LogOut, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,11 +30,15 @@ import { useUser } from "@/lib/hooks/useUser";
 import { useCartStore } from "@/lib/stores/cart";
 
 export function Header() {
+  const pathname = usePathname() || "/";
   const { t } = useTranslation();
   const { user, profile, isAdmin, signOut } = useUser();
   const itemCount = useCartStore((s) => s.lines.length);
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  // Admin routes have their own sidebar/topbar — don't double-stack headers.
+  if (pathname.startsWith("/admin")) return null;
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -45,6 +50,7 @@ export function Header() {
   const nav: Array<{ href: string; label: string; show: boolean }> = [
     { href: "/menu", label: t("nav.menu"), show: true },
     { href: "/pickup", label: t("nav.pickup"), show: true },
+    { href: "/catering", label: t("nav.catering", "Catering"), show: true },
     { href: "/orders", label: t("nav.orders"), show: !!user },
     { href: "/admin", label: t("nav.admin"), show: isAdmin },
   ];

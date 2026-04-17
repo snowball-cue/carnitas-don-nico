@@ -64,6 +64,20 @@ export function MenuCard({ item, className }: MenuCardProps) {
       : formatCurrency(unitPrice, locale);
 
   const qtyLabel = item.unit === "lb" ? formatLbs(qty, locale) : `${qty}`;
+  const [qtyInput, setQtyInput] = React.useState<string>(String(qty));
+  React.useEffect(() => setQtyInput(String(qty)), [qty]);
+  const snapToStep = (n: number) => {
+    const stepped = Math.round(n / step) * step;
+    return Math.max(min, +stepped.toFixed(2));
+  };
+  const commitTyped = () => {
+    const parsed = parseFloat(qtyInput);
+    if (isNaN(parsed) || parsed <= 0) {
+      setQty(min);
+      return;
+    }
+    setQty(snapToStep(parsed));
+  };
 
   const onAdd = () => {
     if (outOfStock) return;
@@ -158,8 +172,24 @@ export function MenuCard({ item, className }: MenuCardProps) {
           >
             <Minus className="h-4 w-4" />
           </button>
-          <span className="min-w-[56px] px-2 text-center text-sm font-semibold tabular-nums">
-            {qtyLabel}
+          <input
+            type="text"
+            inputMode="decimal"
+            value={qtyInput}
+            onChange={(e) => setQtyInput(e.target.value.replace(/[^\d.]/g, ""))}
+            onBlur={commitTyped}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                commitTyped();
+                (e.target as HTMLInputElement).blur();
+              }
+            }}
+            aria-label={t("menu.quantity", "Quantity")}
+            className="w-16 bg-transparent px-2 text-center text-sm font-semibold tabular-nums outline-none focus:bg-papel-warm rounded"
+          />
+          <span className="-ml-1 mr-1 text-xs text-mole/60 pointer-events-none">
+            {item.unit === "lb" ? t("menu.lb", "lb") : ""}
           </span>
           <button
             type="button"

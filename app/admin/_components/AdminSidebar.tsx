@@ -14,6 +14,7 @@ import {
   ReceiptText,
   Bell,
   Users,
+  UtensilsCrossed,
   Menu as MenuIcon,
   LogOut,
 } from "lucide-react";
@@ -52,6 +53,11 @@ function useNavItems(unreadCount: number): NavItem[] {
     () => [
       { href: "/admin", labelKey: "admin.nav.dashboard", icon: LayoutDashboard },
       { href: "/admin/orders", labelKey: "admin.nav.orders", icon: ShoppingBag },
+      {
+        href: "/admin/catering",
+        labelKey: "admin.nav.catering",
+        icon: UtensilsCrossed,
+      },
       {
         href: "/admin/calendar",
         labelKey: "admin.nav.calendar",

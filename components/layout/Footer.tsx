@@ -1,13 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Logo } from "@/components/brand/Logo";
 import { LanguageToggle } from "@/components/common/LanguageToggle";
 
 export function Footer() {
+  const pathname = usePathname() || "/";
   const { t } = useTranslation();
   const year = new Date().getFullYear();
+
+  // Don't show the public footer inside admin — it has its own UserFooter.
+  if (pathname.startsWith("/admin")) return null;
 
   const links = [
     { href: "/menu", label: t("nav.menu") },

@@ -29,6 +29,7 @@
     "home": "Home",
     "menu": "Menu",
     "pickup": "Pickup",
+    "catering": "Catering",
     "cart": "Cart",
     "orders": "My Orders",
     "account": "Account",
@@ -65,6 +66,99 @@
       "lbsRemaining": "{{lbs}} lbs remaining",
       "soldOut": "Sold out",
       "reserveNow": "Reserve now"
+    },
+    "catering": {
+      "title": "Feeding 10+? Catering available.",
+      "body": "Quinceañeras, weddings, work lunches, family gatherings — let Don Nico's cazo handle it.",
+      "cta": "See catering"
+    }
+  },
+  "catering": {
+    "heroTitle": "Catering",
+    "heroSubtitle": "Feed your crew with our cazo — slow-cooked carnitas for events of 10+.",
+    "heroCta": "Request a quote",
+    "features": {
+      "minTitle": "10+ lb minimum",
+      "minBody": "Catering starts at 10 lbs — enough to feed about 20 hungry guests.",
+      "leadTitle": "Plan 1 week ahead",
+      "leadBody": "We cook to order. Give us a week so everything shows up fresh and on time.",
+      "packageTitle": "Sides optional, packaging included",
+      "packageBody": "Add tortillas, salsas, and pico — or just the carnitas. Bilingual packaging always."
+    },
+    "howItWorks": {
+      "title": "How catering works",
+      "step1Title": "Tell us about your event",
+      "step1Body": "Fill out the quick form with your date, headcount, and vibe.",
+      "step2Title": "Don Nico reaches out",
+      "step2Body": "Within 24 hours — by phone, text, or email — to confirm cuts, pricing, and logistics.",
+      "step3Title": "Feast with your people",
+      "step3Body": "Pick up or delivery on your event day. Carnitas arrive hot, sides included if you chose them."
+    },
+    "form": {
+      "title": "Request a quote",
+      "subtitle": "Tell us about your event — we'll text or email you back within 24 hours.",
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "eventDate": "Event date",
+      "eventDateHint": "At least 3 days from today.",
+      "guestCount": "Guest count",
+      "estimatedLbs": "Estimated pounds",
+      "estimatedLbsHint": "Rule of thumb: about 1/2 lb per guest, more for big eaters.",
+      "eventType": "Event type",
+      "eventTypePlaceholder": "e.g. Wedding, Quinceañera",
+      "eventTypes": {
+        "wedding": "Wedding",
+        "quinceanera": "Quinceañera",
+        "corporate": "Corporate",
+        "graduation": "Graduation",
+        "birthday": "Birthday",
+        "other": "Other"
+      },
+      "eventLocation": "Event location",
+      "eventLocationPlaceholder": "Address or just the city — we can sort details later.",
+      "cutsPreference": "Cut preferences",
+      "cutsPreferencePlaceholder": "Maciza, Surtido, mix — or let Don Nico decide",
+      "includesSides": "Include sides?",
+      "includesSidesHint": "Tortillas, salsas, pico de gallo, cebolla, cilantro, limes.",
+      "deliveryNeeded": "Delivery needed?",
+      "deliveryNeededHint": "Yes = we deliver. No = you pick up.",
+      "notes": "Anything else?",
+      "notesPlaceholder": "Timing, dietary restrictions, allergies, special requests...",
+      "submit": "Send request"
+    },
+    "faq": {
+      "title": "Common questions",
+      "subtitle": "If you don't see your question here, just drop it in the notes box above.",
+      "howFar": {
+        "q": "How far ahead should I book?",
+        "a": "A week is ideal — big events need a few days to source meat and prep. We can sometimes fit in rush orders, but earlier is always better."
+      },
+      "travel": {
+        "q": "Do you travel? What's your delivery area?",
+        "a": "Yes, within our local area. Toggle delivery on in the form and tell us where — we'll quote the trip."
+      },
+      "bulk": {
+        "q": "Discounts for bulk orders?",
+        "a": "For very large events (50+ lbs) we can usually work out a bulk rate. Mention it in the notes and Don Nico will take it into account."
+      },
+      "whatsIncluded": {
+        "q": "What's included by default?",
+        "a": "Just the carnitas, sold by the pound. Tortillas, salsas, and sides are a simple add-on — flip the 'Include sides?' switch."
+      },
+      "deposit": {
+        "q": "Do you require a deposit?",
+        "a": "For confirmed catering bookings, yes — we'll let you know the amount when we quote. It locks in your date."
+      },
+      "cancellations": {
+        "q": "What if I need to cancel?",
+        "a": "Let us know as soon as you can. Cancellations more than 72 hours out are usually no problem."
+      }
+    },
+    "success": {
+      "title": "Got it!",
+      "body": "Don Nico will text or email you within 24 hours to plan your event.",
+      "hint": "Save this reference — keep it handy for quick questions."
     }
   },
   "menu": {
@@ -309,6 +403,7 @@
     "nav": {
       "dashboard": "Dashboard",
       "orders": "Orders",
+      "catering": "Catering",
       "calendar": "Calendar",
       "menu": "Menu",
       "expenses": "P&L / Expenses",
@@ -317,6 +412,25 @@
       "receipts": "Receipts",
       "notifications": "Notifications",
       "customers": "Customers"
+    },
+    "catering": {
+      "title": "Catering requests",
+      "statusLabel": "Status",
+      "statusUpdated": "Status updated",
+      "quotedPrice": "Quoted price",
+      "quoteSaved": "Quote saved",
+      "notes": "Notes",
+      "notesPlaceholder": "Internal notes, special requests, call logs...",
+      "notesSaved": "Notes saved",
+      "invalidAmount": "Invalid amount",
+      "status": {
+        "new": "New",
+        "contacted": "Contacted",
+        "quoted": "Quoted",
+        "confirmed": "Confirmed",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
     },
     "dashboard": {
       "title": "Dashboard",

@@ -360,6 +360,42 @@ export interface ReviewRow {
 export type ReviewInsert = Partial<ReviewRow>;
 export type ReviewUpdate = Partial<ReviewRow>;
 
+export type CateringStatus =
+  | "new"
+  | "contacted"
+  | "quoted"
+  | "confirmed"
+  | "completed"
+  | "cancelled";
+
+export interface CateringRequestRow {
+  id: Uuid;
+  full_name: string;
+  email: string;
+  phone: string;
+  event_date: DateString;
+  guest_count: number;
+  estimated_lbs: number;
+  event_type: string | null;
+  event_location: string | null;
+  cuts_preference: string | null;
+  includes_sides: boolean;
+  delivery_needed: boolean;
+  notes: string | null;
+  status: CateringStatus;
+  quoted_price: number | null;
+  customer_id: Uuid | null;
+  created_at: Timestamptz;
+  updated_at: Timestamptz;
+  updated_by_admin_at: Timestamptz | null;
+}
+export type CateringRequestInsert = Partial<CateringRequestRow> &
+  Pick<
+    CateringRequestRow,
+    "full_name" | "email" | "phone" | "event_date" | "guest_count" | "estimated_lbs"
+  >;
+export type CateringRequestUpdate = Partial<CateringRequestRow>;
+
 // ============================================================================
 // Database interface (shape matches @supabase generated types)
 // ============================================================================
@@ -440,6 +476,11 @@ export interface Database {
         Row: ReviewRow;
         Insert: ReviewInsert;
         Update: ReviewUpdate;
+      };
+      catering_requests: {
+        Row: CateringRequestRow;
+        Insert: CateringRequestInsert;
+        Update: CateringRequestUpdate;
       };
     };
     Views: Record<string, never>;
