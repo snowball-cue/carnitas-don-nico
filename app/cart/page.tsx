@@ -23,6 +23,7 @@ import { useCartStore } from "@/lib/stores/cart";
 import { useUser } from "@/lib/hooks/useUser";
 import { getPickupDate } from "@/app/actions/pickup";
 import type { PickupDateRow } from "@/types/database";
+import { PickupSwitcher } from "./PickupSwitcher";
 
 const TIP_PRESETS = [0, 10, 15, 20] as const;
 
@@ -218,24 +219,28 @@ export default function CartPage() {
                   {pickupLabel}
                 </p>
                 <p className="text-sm text-mole/70">{pickupTimeLabel}</p>
-                <Link
-                  href="/pickup"
-                  className="text-xs text-nopal underline mt-1 inline-block"
-                >
-                  {t("cart.changePickup", "Change")}
-                </Link>
+                <PickupSwitcher>
+                  <button
+                    type="button"
+                    className="text-xs text-nopal underline mt-1 inline-block hover:text-nopal-dark"
+                  >
+                    {t("cart.changePickup", "Change")}
+                  </button>
+                </PickupSwitcher>
               </div>
             ) : (
               <div className="mt-2">
                 <p className="text-sm text-mole/70">
                   {t("cart.noPickupSelected", "No pickup date selected")}
                 </p>
-                <Link
-                  href="/pickup"
-                  className="text-sm text-nopal underline mt-1 inline-block"
-                >
-                  {t("cart.selectPickup", "Select a pickup date")}
-                </Link>
+                <PickupSwitcher>
+                  <button
+                    type="button"
+                    className="text-sm text-nopal underline mt-1 inline-block hover:text-nopal-dark"
+                  >
+                    {t("cart.selectPickup", "Select a pickup date")}
+                  </button>
+                </PickupSwitcher>
               </div>
             )}
           </div>

@@ -19,6 +19,7 @@ import { useUser } from "@/lib/hooks/useUser";
 import { getPickupDate } from "@/app/actions/pickup";
 import { createOrder } from "@/app/actions/orders";
 import type { PickupDateRow } from "@/types/database";
+import { PickupSwitcher } from "@/app/cart/PickupSwitcher";
 
 const schema = z.object({
   name: z.string().min(1),
@@ -209,9 +210,11 @@ export default function CheckoutPage() {
               <h2 className="font-display text-xl font-semibold text-mole">
                 {t("checkout.pickup", "Pickup")}
               </h2>
-              <Link href="/pickup" className="text-sm text-nopal underline">
-                {t("common.change", "Change")}
-              </Link>
+              <PickupSwitcher>
+                <button type="button" className="text-sm text-nopal underline hover:text-nopal-dark">
+                  {t("common.change", "Change")}
+                </button>
+              </PickupSwitcher>
             </div>
             <div className="mt-3 flex items-start gap-3">
               <Calendar className="h-5 w-5 text-nopal mt-0.5" />
