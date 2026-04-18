@@ -62,7 +62,7 @@
       "step3Body": "Muestra tu número de pedido. Así de fácil."
     },
     "urgency": {
-      "title": "Próxima recolección",
+      "title": "Ver fechas disponibles",
       "lbsRemaining": "{{lbs}} lbs disponibles",
       "soldOut": "Agotado",
       "reserveNow": "Reserva ahora"

@@ -62,7 +62,7 @@
       "step3Body": "Show your order number. That's it."
     },
     "urgency": {
-      "title": "Next pickup",
+      "title": "See available dates",
       "lbsRemaining": "{{lbs}} lbs remaining",
       "soldOut": "Sold out",
       "reserveNow": "Reserve now"
