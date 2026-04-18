@@ -124,15 +124,48 @@ export default function AdminCalendarPage() {
       } else toast.error(res.error ?? t("common.error"));
     });
 
-  const onDelete = () =>
+  const onDelete = () => {
+    if (!form.id) return;
+    const confirmed = window.confirm(
+      t(
+        "admin.calendar.deleteConfirm",
+        "Delete this pickup date? This can't be undone.",
+      ),
+    );
+    if (!confirmed) return;
     startTransition(async () => {
-      if (!form.id) return;
       const res = await deletePickupDate(form.id);
       if (res.success) {
         toast.success(t("admin.calendar.deleted"));
         void load();
-      } else toast.error(res.error ?? t("common.error"));
+        // Reset the form back to empty/create mode
+        setForm({
+          id: "",
+          pickup_date: ymd(selected),
+          capacity_lbs: 25,
+          pickup_window_start: "11:00",
+          pickup_window_end: "14:00",
+          cutoff_at: "",
+          is_open: true,
+          notes_en: "",
+          notes_es: "",
+        });
+      } else {
+        // If orders are attached, surface a friendlier message
+        const msg = res.error ?? t("common.error");
+        if (/foreign key|violates|orders/i.test(msg)) {
+          toast.error(
+            t(
+              "admin.calendar.hasOrders",
+              "Can't delete — this date has orders attached. Cancel or move them first.",
+            ),
+          );
+        } else {
+          toast.error(msg);
+        }
+      }
     });
+  };
 
   const onNotify = () =>
     startTransition(async () => {
