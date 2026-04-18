@@ -147,17 +147,31 @@ export default function AdminMenuPage() {
     });
 
   const onImageUpload = async (id: string, file: File) => {
-    const form = new FormData();
-    form.append("file", file);
-    const item = items.find((i) => i.id === id);
-    if (item) form.append("slug", item.slug);
-    const res = await uploadMenuImage(form);
-    if (!res.success || !res.data) {
-      toast.error(res.error ?? t("common.error"));
+    // Guard against oversized files before hitting the server action limit.
+    const MAX_BYTES = 10 * 1024 * 1024;
+    if (file.size > MAX_BYTES) {
+      toast.error(
+        `Image is ${(file.size / 1024 / 1024).toFixed(1)} MB. Max is 10 MB — compress or resize it first.`,
+      );
       return;
     }
-    update(id, "image_url", res.data.url);
-    toast.success(t("admin.menu.imageUploaded"));
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const item = items.find((i) => i.id === id);
+      if (item) form.append("slug", item.slug);
+      const res = await uploadMenuImage(form);
+      if (!res.success || !res.data) {
+        toast.error(res.error ?? t("common.error"));
+        return;
+      }
+      update(id, "image_url", res.data.url);
+      toast.success(t("admin.menu.imageUploaded"));
+    } catch (e) {
+      toast.error(
+        e instanceof Error ? e.message : "Upload failed. File may be too large.",
+      );
+    }
   };
 
   return (

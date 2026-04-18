@@ -17,6 +17,12 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    serverActions: {
+      // Default is 1MB — phone photos are often 3-5MB. Allow up to 10MB.
+      bodySizeLimit: "10mb",
+    },
+  },
   images: {
     remotePatterns: [
       {
