@@ -269,6 +269,31 @@ export default function AdminMenuPage() {
                         </SelectContent>
                       </Select>
                     </div>
+                    <div className="md:col-span-2">
+                      <Label className="text-xs">
+                        {t("admin.menu.category", "Category")}
+                      </Label>
+                      <Select
+                        value={item.category}
+                        onValueChange={(v) =>
+                          update(item.id, "category", v as MenuCategory)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CATEGORIES.map((c) => (
+                            <SelectItem key={c} value={c}>
+                              {t(
+                                `menu.category${c.charAt(0).toUpperCase() + c.slice(1)}`,
+                                c.charAt(0).toUpperCase() + c.slice(1),
+                              )}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <div className="flex items-center gap-2">
