@@ -1,8 +1,16 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { MessageSquare, CheckCircle2, XCircle, Flame, HandCoins } from "lucide-react";
+import {
+  MessageSquare,
+  CheckCircle2,
+  XCircle,
+  Flame,
+  HandCoins,
+  Trash2,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -12,6 +20,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -24,11 +40,13 @@ import {
   updateOrderStatus,
   recordPayment,
   addOrderNote,
+  deleteOrder,
 } from "@/app/actions/admin/orders";
 import type { OrderStatus, PaymentMethod } from "@/types/database";
 
 interface OrderActionsProps {
   orderId: string;
+  orderNumber: string;
   initialNotes: string;
   status: OrderStatus;
   depositPaid: number;
@@ -37,18 +55,34 @@ interface OrderActionsProps {
 
 export function OrderActions({
   orderId,
+  orderNumber,
   initialNotes,
   status,
   depositPaid,
   total,
 }: OrderActionsProps) {
   const { t } = useTranslation();
+  const router = useRouter();
   const [pending, startTransition] = React.useTransition();
   const [notes, setNotes] = React.useState(initialNotes);
   const [method, setMethod] = React.useState<PaymentMethod>("cash");
   const [amount, setAmount] = React.useState<string>(
     Math.max(0, total - depositPaid).toFixed(2),
   );
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+
+  const doDelete = () =>
+    startTransition(async () => {
+      const res = await deleteOrder(orderId);
+      if (res.success) {
+        toast.success(t("admin.orderDetail.deleted"));
+        setDeleteOpen(false);
+        router.push("/admin/orders");
+        router.refresh();
+      } else {
+        toast.error(res.error ?? t("common.error"));
+      }
+    });
 
   const doStatus = (next: OrderStatus) =>
     startTransition(async () => {
@@ -199,6 +233,55 @@ export function OrderActions({
           </div>
         </CardContent>
       </Card>
+
+      <Card className="md:col-span-2 border-destructive/30">
+        <CardHeader>
+          <CardTitle className="text-base text-destructive">
+            {t("admin.orderDetail.dangerZone")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center justify-between gap-3">
+          <p className="text-sm text-mole/70">
+            {t("admin.orderDetail.deleteHelp")}
+          </p>
+          <Button
+            variant="destructive"
+            onClick={() => setDeleteOpen(true)}
+            disabled={pending}
+          >
+            <Trash2 className="h-4 w-4" />
+            {t("admin.orderDetail.deleteOrder")}
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("admin.orderDetail.deleteConfirmTitle")}</DialogTitle>
+            <DialogDescription>
+              {t("admin.orderDetail.deleteConfirmBody", { orderNumber })}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setDeleteOpen(false)}
+              disabled={pending}
+            >
+              {t("common.cancel")}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={doDelete}
+              disabled={pending}
+            >
+              <Trash2 className="h-4 w-4" />
+              {t("admin.orderDetail.deleteOrder")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

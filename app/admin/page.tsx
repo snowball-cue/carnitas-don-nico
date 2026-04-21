@@ -45,6 +45,7 @@ interface TodayData {
     order_number: string;
     guest_name: string | null;
     customer_id: string | null;
+    customer_name: string | null;
     total: number;
     total_lbs: number;
     status: string;
@@ -144,6 +145,41 @@ async function loadData(): Promise<TodayData> {
     rows: Array<{ total: number | string | null }> | null | undefined,
   ) => (rows ?? []).reduce((acc, r) => acc + Number(r.total ?? 0), 0);
 
+  const rawRecent = (recentOrdersRes.data ?? []) as Array<{
+    id: string;
+    order_number: string;
+    guest_name: string | null;
+    customer_id: string | null;
+    total: number;
+    total_lbs: number;
+    status: string;
+    created_at: string;
+    pickup_date: string;
+  }>;
+
+  const recentCustomerIds = Array.from(
+    new Set(
+      rawRecent
+        .filter((o) => !o.guest_name && o.customer_id)
+        .map((o) => o.customer_id as string),
+    ),
+  );
+  const nameMap = new Map<string, string>();
+  if (recentCustomerIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from("customer_profiles")
+      .select("id, full_name")
+      .in("id", recentCustomerIds);
+    (profiles ?? []).forEach((p) => {
+      if (p.full_name) nameMap.set(p.id, p.full_name);
+    });
+  }
+
+  const recentOrders = rawRecent.map((o) => ({
+    ...o,
+    customer_name: o.customer_id ? (nameMap.get(o.customer_id) ?? null) : null,
+  }));
+
   return {
     profileName:
       (profileRes.data as { full_name: string | null } | null)?.full_name ?? null,
@@ -158,7 +194,7 @@ async function loadData(): Promise<TodayData> {
       mtdRevenueRes.data as Array<{ total: number | string | null }> | null,
     ),
     unreadCount: unreadRes.count ?? 0,
-    recentOrders: (recentOrdersRes.data ?? []) as TodayData["recentOrders"],
+    recentOrders,
     pendingPickupCount: pendingPickupRes.count ?? 0,
   };
 }
@@ -344,7 +380,7 @@ export default async function AdminDashboardPage() {
                       <div className="min-w-0">
                         <p className="font-medium text-mole truncate">
                           {o.order_number} ·{" "}
-                          {o.guest_name ?? (
+                          {o.guest_name ?? o.customer_name ?? (
                             <T k="admin.dashboard.registeredCustomer" />
                           )}
                         </p>

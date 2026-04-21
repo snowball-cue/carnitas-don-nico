@@ -635,7 +635,13 @@
       "notesPlaceholder": "Internal notes about this order...",
       "notesSaved": "Notes saved",
       "sendSms": "Send SMS",
-      "smsStub": "SMS sending is not configured yet."
+      "smsStub": "SMS sending is not configured yet.",
+      "dangerZone": "Danger zone",
+      "deleteOrder": "Delete order",
+      "deleteHelp": "Permanently remove this order and all its items. This cannot be undone.",
+      "deleteConfirmTitle": "Delete this order?",
+      "deleteConfirmBody": "Order {{orderNumber}} will be permanently removed. This action cannot be undone.",
+      "deleted": "Order deleted"
     },
     "calendar": {
       "title": "Pickup Calendar",

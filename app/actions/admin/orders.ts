@@ -148,6 +148,24 @@ export async function addOrderNote(
   }
 }
 
+export async function deleteOrder(orderId: string): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+    const svc = createServiceRoleClient();
+    const { error } = await svc.from("orders").delete().eq("id", orderId);
+    if (error) throw error;
+    revalidatePath("/admin");
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin/calendar");
+    return { success: true };
+  } catch (e) {
+    return {
+      success: false,
+      error: e instanceof Error ? e.message : "Failed to delete order",
+    };
+  }
+}
+
 export async function bulkUpdateStatus(
   orderIds: string[],
   status: OrderStatus,

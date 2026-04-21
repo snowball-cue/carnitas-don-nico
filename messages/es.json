@@ -635,7 +635,13 @@
       "notesPlaceholder": "Notas internas sobre este pedido...",
       "notesSaved": "Notas guardadas",
       "sendSms": "Enviar SMS",
-      "smsStub": "El envío de SMS aún no está configurado."
+      "smsStub": "El envío de SMS aún no está configurado.",
+      "dangerZone": "Zona de peligro",
+      "deleteOrder": "Eliminar pedido",
+      "deleteHelp": "Elimina permanentemente este pedido y todos sus artículos. Esta acción no se puede deshacer.",
+      "deleteConfirmTitle": "¿Eliminar este pedido?",
+      "deleteConfirmBody": "El pedido {{orderNumber}} se eliminará permanentemente. Esta acción no se puede deshacer.",
+      "deleted": "Pedido eliminado"
     },
     "calendar": {
       "title": "Calendario de Recolecciones",

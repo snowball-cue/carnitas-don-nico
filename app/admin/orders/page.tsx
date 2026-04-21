@@ -70,7 +70,7 @@ function statusBadgeVariant(
   return "default";
 }
 
-function toCsv(rows: Row[]): string {
+function toCsv(rows: Row[], names: Record<string, string>): string {
   const header = [
     "order_number",
     "customer",
@@ -84,10 +84,11 @@ function toCsv(rows: Row[]): string {
   ];
   const lines = [header.join(",")];
   rows.forEach((r) => {
+    const profileName = r.customer_id ? names[r.customer_id] : undefined;
     lines.push(
       [
         r.order_number,
-        JSON.stringify(r.guest_name ?? r.customer_id ?? ""),
+        JSON.stringify(r.guest_name ?? profileName ?? r.customer_id ?? ""),
         JSON.stringify(r.guest_phone ?? ""),
         r.pickup_date,
         r.total_lbs,
@@ -105,6 +106,7 @@ export default function AdminOrdersPage() {
   const { t } = useTranslation();
   const supabase = React.useMemo(() => getClient(), []);
   const [rows, setRows] = React.useState<Row[]>([]);
+  const [customerNames, setCustomerNames] = React.useState<Record<string, string>>({});
   const [loading, setLoading] = React.useState(true);
   const [search, setSearch] = React.useState("");
   const [pickupDate, setPickupDate] = React.useState("");
@@ -128,17 +130,39 @@ export default function AdminOrdersPage() {
     if (error) {
       toast.error(error.message);
       setRows([]);
+      setCustomerNames({});
     } else {
-      const filtered = (data as Row[]).filter((r) => {
+      const allRows = data as Row[];
+      const ids = Array.from(
+        new Set(
+          allRows
+            .filter((r) => !r.guest_name && r.customer_id)
+            .map((r) => r.customer_id as string),
+        ),
+      );
+      const nameMap: Record<string, string> = {};
+      if (ids.length > 0) {
+        const { data: profiles } = await supabase
+          .from("customer_profiles")
+          .select("id, full_name")
+          .in("id", ids);
+        (profiles ?? []).forEach((p) => {
+          if (p.full_name) nameMap[p.id] = p.full_name;
+        });
+      }
+      const filtered = allRows.filter((r) => {
         if (!search) return true;
         const s = search.toLowerCase();
+        const profileName = r.customer_id ? (nameMap[r.customer_id] ?? "") : "";
         return (
           r.order_number.toLowerCase().includes(s) ||
           (r.guest_name ?? "").toLowerCase().includes(s) ||
-          (r.guest_phone ?? "").toLowerCase().includes(s)
+          (r.guest_phone ?? "").toLowerCase().includes(s) ||
+          profileName.toLowerCase().includes(s)
         );
       });
       setRows(filtered);
+      setCustomerNames(nameMap);
     }
     setLoading(false);
   }, [supabase, pickupDate, statusFilter, search]);
@@ -172,7 +196,7 @@ export default function AdminOrdersPage() {
   };
 
   const exportCsv = () => {
-    const csv = toCsv(rows);
+    const csv = toCsv(rows, customerNames);
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -310,7 +334,9 @@ export default function AdminOrdersPage() {
                   </td>
                   <td className="p-3">
                     <div className="font-medium">
-                      {r.guest_name ?? t("admin.orders.registeredCustomer")}
+                      {r.guest_name ??
+                        (r.customer_id ? customerNames[r.customer_id] : null) ??
+                        t("admin.orders.registeredCustomer")}
                     </div>
                     <div className="text-xs text-mole/60">{r.guest_phone ?? ""}</div>
                   </td>
@@ -361,7 +387,9 @@ export default function AdminOrdersPage() {
                         {r.order_number}
                       </p>
                       <p className="font-medium">
-                        {r.guest_name ?? t("admin.orders.registeredCustomer")}
+                        {r.guest_name ??
+                        (r.customer_id ? customerNames[r.customer_id] : null) ??
+                        t("admin.orders.registeredCustomer")}
                       </p>
                       {r.guest_phone ? (
                         <p className="text-xs text-mole/60">{r.guest_phone}</p>

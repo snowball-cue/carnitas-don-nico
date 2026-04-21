@@ -43,6 +43,20 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
   const order = orderRes.data as OrderRow;
   const items = (itemsRes.data ?? []) as OrderItemRow[];
 
+  let customerProfile: {
+    full_name: string | null;
+    phone: string | null;
+    email: string | null;
+  } | null = null;
+  if (order.customer_id) {
+    const { data } = await supabase
+      .from("customer_profiles")
+      .select("full_name, phone, email")
+      .eq("id", order.customer_id)
+      .maybeSingle();
+    customerProfile = data ?? null;
+  }
+
   // Lightweight activity log from status timestamps
   const events: Array<{ label: string; ts: string | null }> = [
     { label: "Created", ts: order.created_at },
@@ -162,6 +176,7 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
 
           <OrderActions
             orderId={order.id}
+            orderNumber={order.order_number}
             initialNotes={order.notes ?? ""}
             status={order.status}
             depositPaid={Number(order.deposit_paid)}
@@ -198,13 +213,19 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
             </CardHeader>
             <CardContent className="space-y-1 text-sm">
               <p className="font-medium">
-                {order.guest_name ?? "Registered customer"}
+                {order.guest_name ??
+                  customerProfile?.full_name ??
+                  "Registered customer"}
               </p>
-              {order.guest_phone ? (
-                <p className="text-mole/70">{order.guest_phone}</p>
+              {(order.guest_phone ?? customerProfile?.phone) ? (
+                <p className="text-mole/70">
+                  {order.guest_phone ?? customerProfile?.phone}
+                </p>
               ) : null}
-              {order.guest_email ? (
-                <p className="text-mole/70">{order.guest_email}</p>
+              {(order.guest_email ?? customerProfile?.email) ? (
+                <p className="text-mole/70">
+                  {order.guest_email ?? customerProfile?.email}
+                </p>
               ) : null}
               {order.customer_id ? (
                 <p className="text-xs text-mole/50 font-mono">
