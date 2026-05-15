@@ -20,6 +20,7 @@ import { CountdownPill } from "./_components/CountdownPill";
 import { T } from "./_components/TranslatedText";
 import { StatusPill } from "./_components/StatusPill";
 import { PushSetup } from "./_components/PushSetup";
+import { PasskeySetup } from "./_components/PasskeySetup";
 
 export const dynamic = "force-dynamic";
 
@@ -300,6 +301,9 @@ export default async function AdminDashboardPage() {
 
       {/* Push-notification opt-in (renders nothing once subscribed) */}
       <PushSetup />
+
+      {/* Face / fingerprint sign-in setup (renders nothing once a passkey exists) */}
+      <PasskeySetup />
 
       {/* Recent orders */}
       <Card>

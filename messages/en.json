@@ -791,6 +791,11 @@
       "backToSite": "Sign out",
       "openMenu": "Open menu"
     },
+    "passkey": {
+      "title": "Sign in with your face or fingerprint",
+      "hint": "Add this device once. Next time, tap your photo on the login screen — no password.",
+      "cta": "Set it up"
+    },
     "push": {
       "onTitle": "Order notifications are on",
       "onHint": "We'll buzz this device when a customer orders, cancels, or asks about catering.",

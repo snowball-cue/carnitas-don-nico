@@ -791,6 +791,11 @@
       "backToSite": "Cerrar sesión",
       "openMenu": "Abrir menú"
     },
+    "passkey": {
+      "title": "Inicia sesión con tu cara o huella",
+      "hint": "Agrega este dispositivo una vez. La próxima vez, toca tu foto en la pantalla de inicio de sesión — sin contraseña.",
+      "cta": "Configurar"
+    },
     "push": {
       "onTitle": "Las notificaciones de pedidos están activas",
       "onHint": "Este dispositivo sonará cuando un cliente haga, cancele o pregunte por catering.",
