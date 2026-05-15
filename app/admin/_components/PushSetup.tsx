@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Bell, BellOff, BellRing } from "lucide-react";
+import { Bell, BellOff, BellRing, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -75,25 +75,100 @@ export function PushSetup() {
   const enable = React.useCallback(async () => {
     setPending(true);
     try {
-      const reg = await navigator.serviceWorker.ready;
-      const sub = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-      });
-      const raw = sub.toJSON();
-      if (!raw.endpoint || !raw.keys?.p256dh || !raw.keys?.auth) {
-        toast.error("Could not save subscription");
+      // 1) Sanity-check that the VAPID public key actually shipped. If it's
+      //    blank, subscribe() throws an opaque error that looks like nothing
+      //    happened.
+      if (!VAPID_PUBLIC_KEY) {
+        toast.error(
+          t(
+            "admin.push.noVapidToast",
+            "Server isn't set up for push yet. Ask the developer to add the VAPID keys.",
+          ),
+        );
         return;
       }
+
+      // 2) Explicitly request permission first. Some browsers (notably iOS
+      //    Safari / WebKit) won't auto-prompt from subscribe() and will
+      //    silently reject if Notification.permission is still "default".
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        if (permission === "denied") {
+          setStatus("denied");
+          toast.error(
+            t(
+              "admin.push.deniedToast",
+              "Notifications blocked. Enable them in your phone's settings for this app, then try again.",
+            ),
+          );
+        } else {
+          // "default" = user dismissed the prompt without choosing.
+          toast(
+            t(
+              "admin.push.dismissedToast",
+              "No problem — tap the button again when you're ready.",
+            ),
+          );
+        }
+        return;
+      }
+
+      // 3) Wait for the SW, with a hard timeout so we never hang silently
+      //    on a browser that's mis-registered.
+      const reg = await Promise.race<ServiceWorkerRegistration>([
+        navigator.serviceWorker.ready,
+        new Promise<ServiceWorkerRegistration>((_, reject) =>
+          setTimeout(
+            () => reject(new Error("Service worker isn't ready yet.")),
+            8000,
+          ),
+        ),
+      ]);
+
+      // 4) Subscribe. If a subscription already exists for this device we'll
+      //    get back the same one — that's fine, we just re-upsert it.
+      const existing = await reg.pushManager.getSubscription();
+      const sub =
+        existing ??
+        (await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        }));
+
+      const raw = sub.toJSON();
+      if (!raw.endpoint || !raw.keys?.p256dh || !raw.keys?.auth) {
+        toast.error(
+          t(
+            "admin.push.badSubToast",
+            "Couldn't save this device's subscription. Try again.",
+          ),
+        );
+        return;
+      }
+
+      // 5) Persist on the server. If THIS step fails, also drop the local
+      //    subscription so we don't end up with a phantom device the user
+      //    can't see in the inbox.
       const res = await registerPushSubscription({
         endpoint: raw.endpoint,
         keys: { p256dh: raw.keys.p256dh, auth: raw.keys.auth },
         userAgent: navigator.userAgent,
       });
       if (!res.success) {
-        toast.error(res.error);
+        try {
+          await sub.unsubscribe();
+        } catch {
+          /* best effort */
+        }
+        toast.error(res.error, {
+          description: t(
+            "admin.push.saveFailedHint",
+            "Sign in again and retry. If it keeps happening, the database migration may not be applied.",
+          ),
+        });
         return;
       }
+
       setEndpoint(raw.endpoint);
       setStatus("subscribed");
       toast.success(
@@ -109,11 +184,14 @@ export function PushSetup() {
         toast.error(
           t(
             "admin.push.deniedToast",
-            "Notifications blocked. Enable them in your browser settings to receive order alerts.",
+            "Notifications blocked. Enable them in your phone's settings for this app, then try again.",
           ),
         );
       } else {
-        toast.error(msg);
+        toast.error(
+          t("admin.push.errorToast", "Couldn't turn on notifications."),
+          { description: msg },
+        );
       }
     } finally {
       setPending(false);
@@ -245,8 +323,14 @@ export function PushSetup() {
               onClick={() => void enable()}
               disabled={pending || status === "denied"}
             >
-              <Bell className="h-5 w-5" />
-              {t("admin.push.on", "Turn on notifications")}
+              {pending ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Bell className="h-5 w-5" />
+              )}
+              {pending
+                ? t("admin.push.working", "Setting up…")
+                : t("admin.push.on", "Turn on notifications")}
             </Button>
           )}
         </div>
