@@ -26,6 +26,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Logo } from "@/components/brand/Logo";
 import { LanguageToggle } from "@/components/common/LanguageToggle";
+import { InstallPrompt } from "@/components/common/InstallPrompt";
 import { useUser } from "@/lib/hooks/useUser";
 import { useCartStore } from "@/lib/stores/cart";
 
@@ -95,8 +96,11 @@ export function Header() {
           </nav>
         </div>
 
-        {/* Right: language + cart + auth */}
+        {/* Right: install + language + cart + auth */}
         <div className="flex items-center gap-2 md:gap-3">
+          {/* PWA install affordance — renders only when installable + not yet installed */}
+          <InstallPrompt className="hidden sm:inline-flex" />
+
           {/* Language toggle — always visible on both mobile and desktop */}
           <LanguageToggle size="sm" />
 
@@ -191,6 +195,7 @@ export function Header() {
                   ))}
               </nav>
               <div className="mt-auto space-y-3 border-t border-nopal/10 pt-4">
+                <InstallPrompt className="w-full justify-center sm:hidden" />
                 {user ? (
                   <Button
                     variant="outline"

@@ -37,6 +37,15 @@
     "signOut": "Sign Out",
     "admin": "Admin"
   },
+  "install": {
+    "cta": "Install app",
+    "iosTitle": "Add to Home Screen",
+    "iosDescription": "Install Carnitas Don Nico on your iPhone for one-tap re-ordering.",
+    "iosStep1Prefix": "Tap the Share button",
+    "iosStep1Suffix": "at the bottom of Safari.",
+    "iosStep2": "Scroll and tap \"Add to Home Screen\".",
+    "iosStep3": "Tap \"Add\" — the carnitas icon appears on your home screen."
+  },
   "landing": {
     "hero": {
       "title": "Carnitas al estilo Michoacán",

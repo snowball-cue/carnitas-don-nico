@@ -37,6 +37,15 @@
     "signOut": "Cerrar Sesión",
     "admin": "Admin"
   },
+  "install": {
+    "cta": "Instalar app",
+    "iosTitle": "Agregar a Pantalla de Inicio",
+    "iosDescription": "Instala Carnitas Don Nico en tu iPhone para reordenar con un solo toque.",
+    "iosStep1Prefix": "Toca el botón Compartir",
+    "iosStep1Suffix": "en la parte de abajo de Safari.",
+    "iosStep2": "Desplázate y toca \"Agregar a Pantalla de Inicio\".",
+    "iosStep3": "Toca \"Agregar\" — el ícono de las carnitas aparece en tu pantalla de inicio."
+  },
   "landing": {
     "hero": {
       "title": "Carnitas al estilo Michoacán",
