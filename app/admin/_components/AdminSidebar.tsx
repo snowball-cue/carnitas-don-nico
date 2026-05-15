@@ -307,7 +307,7 @@ export function AdminSidebar({ user, unreadCount }: AdminSidebarProps) {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="w-80 bg-nopal text-papel p-0 border-r-0"
+            className="flex w-80 flex-col bg-nopal text-papel p-0 border-r-0"
           >
             <SheetHeader className="px-5 py-5">
               <SheetTitle className="text-papel flex items-center gap-3">
@@ -318,7 +318,7 @@ export function AdminSidebar({ user, unreadCount }: AdminSidebarProps) {
               </SheetTitle>
             </SheetHeader>
             <div className="h-px bg-papel/10 mx-3" />
-            <div className="py-4">
+            <div className="flex-1 overflow-y-auto py-4">
               <NavGroups
                 pathname={pathname}
                 sections={sections}
