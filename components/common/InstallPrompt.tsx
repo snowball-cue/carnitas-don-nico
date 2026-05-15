@@ -36,7 +36,19 @@ function isStandalone(): boolean {
   );
 }
 
-export function InstallPrompt({ className }: { className?: string }) {
+export function InstallPrompt({
+  className,
+  variant = "pill",
+}: {
+  className?: string;
+  /**
+   * - "pill"   — oro background, icon + text (default; customer header desktop).
+   * - "ghost"  — transparent, icon-only, fits dark backgrounds (admin top bar
+   *               or any compact mobile placement). Includes an sr-only label
+   *               for accessibility.
+   */
+  variant?: "pill" | "ghost";
+}) {
   const { t } = useTranslation();
   const [deferredEvent, setDeferredEvent] =
     React.useState<BeforeInstallPromptEvent | null>(null);
@@ -96,19 +108,27 @@ export function InstallPrompt({ className }: { className?: string }) {
   const visible = deferredEvent !== null || platform === "ios";
   if (!visible) return null;
 
+  const isGhost = variant === "ghost";
+
   return (
     <>
       <button
         type="button"
         onClick={() => void handleClick()}
         className={cn(
-          "inline-flex h-9 items-center gap-1.5 rounded-full bg-oro px-3 text-sm font-semibold text-mole shadow-sm transition-colors hover:bg-oro/90",
+          isGhost
+            ? "inline-flex h-10 w-10 items-center justify-center rounded-md text-papel hover:bg-papel/10"
+            : "inline-flex h-9 items-center gap-1.5 rounded-full bg-oro px-3 text-sm font-semibold text-mole shadow-sm transition-colors hover:bg-oro/90",
           className,
         )}
         aria-label={t("install.cta", "Install app")}
       >
-        <Download className="h-4 w-4" />
-        <span>{t("install.cta", "Install app")}</span>
+        <Download className={isGhost ? "h-5 w-5" : "h-4 w-4"} />
+        {isGhost ? (
+          <span className="sr-only">{t("install.cta", "Install app")}</span>
+        ) : (
+          <span>{t("install.cta", "Install app")}</span>
+        )}
       </button>
 
       <Dialog open={iosHelpOpen} onOpenChange={setIosHelpOpen}>

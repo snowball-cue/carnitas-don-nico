@@ -25,6 +25,7 @@ import { useTranslation } from "@/lib/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
 import { Logo } from "@/components/brand/Logo";
 import { Badge } from "@/components/ui/badge";
+import { InstallPrompt } from "@/components/common/InstallPrompt";
 import {
   Sheet,
   SheetContent,
@@ -289,13 +290,17 @@ export function AdminSidebar({ user, unreadCount }: AdminSidebarProps) {
 
       {/* Mobile top bar + sheet */}
       <header className="md:hidden sticky top-0 z-30 flex items-center justify-between bg-nopal text-papel px-4 py-3 shadow-cazo-1">
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-center gap-2">
           <Logo size="sm" />
-          <span className="font-display text-lg">
+          <span className="font-display text-lg truncate">
             {t("admin.shell.adminArea")}
           </span>
         </div>
-        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <div className="flex items-center gap-1">
+          {/* PWA install affordance — icon-only on the admin top bar.
+              Hidden once the PWA is already installed/standalone. */}
+          <InstallPrompt variant="ghost" />
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger
             className="relative inline-flex h-11 w-11 items-center justify-center rounded-md hover:bg-papel/10"
             aria-label={t("admin.shell.openMenu")}
@@ -328,6 +333,7 @@ export function AdminSidebar({ user, unreadCount }: AdminSidebarProps) {
             <UserFooter user={user} />
           </SheetContent>
         </Sheet>
+        </div>
       </header>
     </>
   );

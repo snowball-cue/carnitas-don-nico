@@ -98,8 +98,11 @@ export function Header() {
 
         {/* Right: install + language + cart + auth */}
         <div className="flex items-center gap-2 md:gap-3">
-          {/* PWA install affordance — renders only when installable + not yet installed */}
+          {/* PWA install affordance — renders only when installable + not yet
+              installed. Pill on tablet+, icon-only on mobile so the top bar
+              doesn't overflow. */}
           <InstallPrompt className="hidden sm:inline-flex" />
+          <InstallPrompt variant="ghost" className="sm:hidden" />
 
           {/* Language toggle — always visible on both mobile and desktop */}
           <LanguageToggle size="sm" />
