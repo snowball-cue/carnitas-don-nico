@@ -1,26 +1,24 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import {
-  ShoppingBag,
-  DollarSign,
   CalendarDays,
   Bell,
   ArrowRight,
+  Flame,
 } from "lucide-react";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { DashboardGreeting } from "./_components/DashboardGreeting";
 import { QuickActions } from "./_components/QuickActions";
 import { CapacityBar } from "./_components/CapacityBar";
 import { CountdownPill } from "./_components/CountdownPill";
 import { T } from "./_components/TranslatedText";
+import { StatusPill } from "./_components/StatusPill";
 
 export const dynamic = "force-dynamic";
 
@@ -209,232 +207,205 @@ function fmtMoney(n: number) {
 
 export default async function AdminDashboardPage() {
   const d = await loadData();
+  const today = format(new Date(), "yyyy-MM-dd");
+  const isPickupToday =
+    d.nextPickup?.pickup_date === today;
 
   return (
-    <div className="space-y-6">
-      {/* Hero */}
+    <div className="space-y-8">
+      {/* Hero greeting */}
       <div className="flex flex-col gap-2">
         <DashboardGreeting name={d.profileName} />
         <T
           as="p"
-          className="text-mole/70"
+          className="text-lg text-mole/70"
           k="admin.dashboard.subtitle"
         />
       </div>
 
-      {/* Quick actions */}
-      <QuickActions />
-
-      {/* Top cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Next pickup */}
-        <Card className="lg:col-span-2">
-          <CardHeader className="pb-2">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <CalendarDays className="h-4 w-4 text-nopal" />
-                <CardTitle className="text-base">
-                  <T k="admin.dashboard.nextPickup" />
-                </CardTitle>
-              </div>
-              {d.nextPickup ? <CountdownPill iso={d.nextPickup.cutoff_at} /> : null}
-            </div>
-          </CardHeader>
-          <CardContent>
-            {d.nextPickup ? (
-              <div className="space-y-3">
-                <div className="flex items-baseline gap-3">
-                  <span className="font-display text-2xl text-mole">
-                    {format(
-                      new Date(`${d.nextPickup.pickup_date}T12:00:00`),
-                      "EEE MMM d",
-                    )}
-                  </span>
-                  <span className="text-sm text-mole/70">
+      {/* Today strip — the most important card */}
+      <Card className="border-2 border-oro/40 bg-gradient-to-r from-oro/10 via-papel to-papel">
+        <CardContent className="p-5 md:p-6">
+          {d.nextPickup ? (
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-start gap-4">
+                <div
+                  className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${
+                    isPickupToday ? "bg-chile text-papel" : "bg-oro text-mole"
+                  }`}
+                >
+                  {isPickupToday ? (
+                    <Flame className="h-7 w-7" strokeWidth={2.25} />
+                  ) : (
+                    <CalendarDays className="h-7 w-7" strokeWidth={2.25} />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-baseline gap-3 flex-wrap">
+                    <p className="font-display text-3xl text-mole leading-tight">
+                      {isPickupToday ? (
+                        <T k="admin.dashboard.todayIsPickup" />
+                      ) : (
+                        format(
+                          new Date(`${d.nextPickup.pickup_date}T12:00:00`),
+                          "EEEE, MMMM d",
+                        )
+                      )}
+                    </p>
+                    <CountdownPill iso={d.nextPickup.cutoff_at} />
+                  </div>
+                  <p className="mt-1 text-base text-mole/75">
+                    <T
+                      k="admin.dashboard.ordersOnDate"
+                      values={{ count: d.nextPickup.order_count }}
+                    />
+                    <span className="mx-2 text-mole/40">·</span>
                     {d.nextPickup.pickup_window_start.slice(0, 5)}–
                     {d.nextPickup.pickup_window_end.slice(0, 5)}
-                  </span>
+                  </p>
                 </div>
+              </div>
+              <div className="md:w-72 shrink-0">
                 <CapacityBar
                   reserved={Number(d.nextPickup.reserved_lbs)}
                   capacity={Number(d.nextPickup.capacity_lbs)}
                 />
-                <div className="text-sm text-mole/80">
-                  <T
-                    k="admin.dashboard.ordersOnDate"
-                    values={{ count: d.nextPickup.order_count }}
-                  />
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-center gap-4">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-papel-warm text-mole/60">
+                  <CalendarDays className="h-7 w-7" strokeWidth={2.25} />
                 </div>
+                <p className="font-display text-2xl text-mole">
+                  <T k="admin.dashboard.noUpcomingPickupShort" />
+                </p>
               </div>
-            ) : (
-              <div className="space-y-3">
-                <T
-                  as="p"
-                  k="admin.dashboard.noUpcomingPickup"
-                  className="text-mole/70"
-                />
-                <Link
-                  href="/admin/calendar"
-                  className="inline-flex items-center gap-1 text-sm text-nopal underline-offset-4 hover:underline"
-                >
-                  <T k="admin.quickActions.newPickup" />
-                  <ArrowRight className="h-3 w-3" />
-                </Link>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+              <Link
+                href="/admin/calendar"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-nopal px-6 text-base font-semibold text-papel hover:bg-nopal/90"
+              >
+                <T k="admin.dashboard.actionNewPickup" />
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
-        {/* Revenue */}
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-nopal" />
-              <CardTitle className="text-base">
+      {/* Big action tiles */}
+      <QuickActions />
+
+      {/* Recent orders */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+          <CardTitle className="font-display text-2xl text-mole">
+            <T k="admin.dashboard.recentOrders" />
+          </CardTitle>
+          <Link
+            href="/admin/orders"
+            className="inline-flex items-center gap-1 text-base font-semibold text-nopal hover:underline underline-offset-4"
+          >
+            <T k="admin.dashboard.viewAll" />
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </CardHeader>
+        <CardContent className="pt-0">
+          {d.recentOrders.length === 0 ? (
+            <T
+              as="p"
+              k="admin.dashboard.noRecentOrders"
+              className="py-6 text-center text-base text-mole/60"
+            />
+          ) : (
+            <ul className="divide-y divide-mole/10">
+              {d.recentOrders.map((o) => (
+                <li key={o.id}>
+                  <Link
+                    href={`/admin/orders/${o.id}`}
+                    className="flex items-center justify-between gap-4 px-1 py-4 hover:bg-papel/40 rounded-md"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="text-lg font-semibold text-mole truncate">
+                        {o.guest_name ??
+                          o.customer_name ??
+                          <T k="admin.dashboard.registeredCustomer" />}
+                      </p>
+                      <p className="text-sm text-mole/60">
+                        {o.order_number} ·{" "}
+                        {format(new Date(o.created_at), "MMM d, h:mm a")} ·{" "}
+                        {Number(o.total_lbs).toFixed(1)} lb
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <StatusPill status={o.status} />
+                      <span className="font-display text-xl text-mole tabular-nums">
+                        {fmtMoney(Number(o.total))}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* This week at a glance — quiet bottom strip */}
+      <div>
+        <h2 className="mb-3 font-display text-xl text-mole/80">
+          <T k="admin.dashboard.weekGlanceTitle" />
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <Card>
+            <CardContent className="p-5">
+              <p className="text-sm text-mole/60">
                 <T k="admin.dashboard.revenue" />
-              </CardTitle>
-            </div>
-            <CardDescription>
-              <T k="admin.dashboard.todayAndMtd" />
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-3xl text-mole">
-                {fmtMoney(d.todayRevenue)}
-              </span>
-              <span className="text-xs text-mole/60">
-                <T k="admin.dashboard.today" />
-              </span>
-            </div>
-            <div className="mt-2 text-sm text-mole/70">
-              <T
-                k="admin.dashboard.mtdValue"
-                values={{ amount: fmtMoney(d.mtdRevenue) }}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Orders */}
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="h-4 w-4 text-nopal" />
-              <CardTitle className="text-base">
+              </p>
+              <p className="mt-1 font-display text-3xl text-mole tabular-nums">
+                {fmtMoney(d.mtdRevenue)}
+              </p>
+              <p className="mt-1 text-sm text-mole/60">
+                {fmtMoney(d.todayRevenue)} <T k="admin.dashboard.today" />
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-5">
+              <p className="text-sm text-mole/60">
                 <T k="admin.dashboard.orders" />
-              </CardTitle>
-            </div>
-            <CardDescription>
-              <T k="admin.dashboard.ordersDescription" />
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-3xl text-mole">
+              </p>
+              <p className="mt-1 font-display text-3xl text-mole tabular-nums">
                 {d.todayOrderCount}
-              </span>
-              <span className="text-xs text-mole/60">
-                <T k="admin.dashboard.newToday" />
-              </span>
-            </div>
-            <div className="mt-2 text-sm text-mole/70">
-              <T
-                k="admin.dashboard.pendingPickups"
-                values={{ count: d.pendingPickupCount }}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent + Notifications row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-base">
-              <T k="admin.dashboard.recentOrders" />
-            </CardTitle>
-            <Link
-              href="/admin/orders"
-              className="text-sm text-nopal underline-offset-4 hover:underline"
-            >
-              <T k="admin.dashboard.viewAll" />
-            </Link>
-          </CardHeader>
-          <CardContent>
-            {d.recentOrders.length === 0 ? (
-              <T
-                as="p"
-                k="admin.dashboard.noRecentOrders"
-                className="text-sm text-mole/60"
-              />
-            ) : (
-              <ul className="divide-y divide-nopal/10">
-                {d.recentOrders.map((o) => (
-                  <li key={o.id} className="py-2">
-                    <Link
-                      href={`/admin/orders/${o.id}`}
-                      className="flex items-center justify-between gap-3 hover:bg-papel/40 rounded-md p-1 -m-1"
-                    >
-                      <div className="min-w-0">
-                        <p className="font-medium text-mole truncate">
-                          {o.order_number} ·{" "}
-                          {o.guest_name ?? o.customer_name ?? (
-                            <T k="admin.dashboard.registeredCustomer" />
-                          )}
-                        </p>
-                        <p className="text-xs text-mole/60">
-                          {format(new Date(o.created_at), "MMM d HH:mm")} ·{" "}
-                          {Number(o.total_lbs).toFixed(1)} lb
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <Badge
-                          variant={o.status === "pending" ? "outline" : "default"}
-                          className="text-[10px]"
-                        >
-                          {o.status}
-                        </Badge>
-                        <span className="font-mono text-sm text-mole">
-                          {fmtMoney(Number(o.total))}
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <div className="flex items-center gap-2">
-              <Bell className="h-4 w-4 text-nopal" />
-              <CardTitle className="text-base">
+              </p>
+              <p className="mt-1 text-sm text-mole/60">
+                <T
+                  k="admin.dashboard.pendingPickups"
+                  values={{ count: d.pendingPickupCount }}
+                />
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-5">
+              <div className="flex items-center gap-2 text-sm text-mole/60">
+                <Bell className="h-4 w-4" />
                 <T k="admin.dashboard.notifications" />
-              </CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-3xl text-mole">
+              </div>
+              <p className="mt-1 font-display text-3xl text-mole tabular-nums">
                 {d.unreadCount}
-              </span>
-              <span className="text-xs text-mole/60">
-                <T k="admin.dashboard.unread" />
-              </span>
-            </div>
-            <Link
-              href="/admin/notifications"
-              className="inline-flex items-center gap-1 text-sm text-nopal underline-offset-4 hover:underline"
-            >
-              <T k="admin.dashboard.viewNotifications" />
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-          </CardContent>
-        </Card>
+              </p>
+              <Link
+                href="/admin/notifications"
+                className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-nopal hover:underline underline-offset-4"
+              >
+                <T k="admin.dashboard.viewNotifications" />
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

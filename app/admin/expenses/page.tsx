@@ -154,28 +154,28 @@ export default function AdminExpensesPage() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="font-display text-2xl text-mole">
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-3xl md:text-4xl text-mole">
           {t("admin.expenses.title")}
         </h1>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Input
             type="date"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
             aria-label={t("admin.expenses.from")}
-            className="w-auto"
+            className="w-auto h-12 text-base"
           />
           <Input
             type="date"
             value={to}
             onChange={(e) => setTo(e.target.value)}
             aria-label={t("admin.expenses.to")}
-            className="w-auto"
+            className="w-auto h-12 text-base"
           />
-          <Button variant="outline" onClick={exportCsv}>
-            <Download className="h-4 w-4" />
+          <Button variant="outline" size="lg" onClick={exportCsv}>
+            <Download className="h-5 w-5" />
             {t("admin.expenses.exportCsv")}
           </Button>
         </div>
@@ -185,105 +185,101 @@ export default function AdminExpensesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-mole/70">
+            <CardTitle className="text-base text-mole/70 font-medium">
               {t("admin.expenses.revenue")}
             </CardTitle>
           </CardHeader>
-          <CardContent className="font-display text-3xl text-agave-sage">
+          <CardContent className="font-display text-4xl text-agave-sage tabular-nums">
             {fmtMoney(revenue)}
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-mole/70">
+            <CardTitle className="text-base text-mole/70 font-medium">
               {t("admin.expenses.expenses")}
             </CardTitle>
           </CardHeader>
-          <CardContent className="font-display text-3xl text-chile">
+          <CardContent className="font-display text-4xl text-chile tabular-nums">
             {fmtMoney(expenseTotal)}
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-mole/70">
+            <CardTitle className="text-base text-mole/70 font-medium">
               {t("admin.expenses.profit")}
             </CardTitle>
           </CardHeader>
           <CardContent
-            className={`font-display text-3xl ${profit >= 0 ? "text-nopal" : "text-chile"}`}
+            className={`font-display text-4xl tabular-nums ${profit >= 0 ? "text-nopal" : "text-chile"}`}
           >
             {fmtMoney(profit)}
           </CardContent>
         </Card>
       </div>
 
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-3 flex-wrap">
         <AddExpenseDialog onCreated={() => void load()} />
         <AddManualRevenueDialog onCreated={() => void load()} />
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
+          <CardTitle className="font-display text-2xl">
             {t("admin.expenses.expensesList")}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-base">
               <thead>
-                <tr className="border-b border-nopal/10 text-left text-xs uppercase text-mole/60">
-                  <th className="p-3">{t("admin.expenses.col_date")}</th>
-                  <th className="p-3">{t("admin.expenses.col_category")}</th>
-                  <th className="p-3">{t("admin.expenses.col_description")}</th>
-                  <th className="p-3 text-right">
+                <tr className="border-b border-nopal/10 text-left text-sm uppercase text-mole/60">
+                  <th className="p-4">{t("admin.expenses.col_date")}</th>
+                  <th className="p-4">{t("admin.expenses.col_category")}</th>
+                  <th className="p-4">{t("admin.expenses.col_description")}</th>
+                  <th className="p-4 text-right">
                     {t("admin.expenses.col_amount")}
                   </th>
-                  <th className="p-3"></th>
+                  <th className="p-4 w-32"></th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={5} className="p-6 text-center text-mole/60">
+                    <td colSpan={5} className="p-8 text-center text-lg text-mole/60">
                       {t("common.loading")}
                     </td>
                   </tr>
                 ) : expenses.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-6 text-center text-mole/60">
+                    <td colSpan={5} className="p-8 text-center text-lg text-mole/60">
                       {t("admin.expenses.none")}
                     </td>
                   </tr>
                 ) : (
                   expenses.map((e) => (
-                    <tr
-                      key={e.id}
-                      className="border-b border-nopal/5"
-                    >
-                      <td className="p-3">
+                    <tr key={e.id} className="border-b border-nopal/5">
+                      <td className="p-4">
                         {format(
                           new Date(`${e.expense_date}T12:00:00`),
                           "MMM d",
                         )}
                       </td>
-                      <td className="p-3 text-xs font-mono text-mole/80">
-                        {e.category}
-                      </td>
-                      <td className="p-3">{e.description ?? "—"}</td>
-                      <td className="p-3 text-right font-mono text-chile">
+                      <td className="p-4 text-mole/80">{e.category}</td>
+                      <td className="p-4">{e.description ?? "—"}</td>
+                      <td className="p-4 text-right font-display text-lg text-chile tabular-nums">
                         {fmtMoney(Number(e.amount))}
                       </td>
-                      <td className="p-3">
-                        <div className="flex items-center justify-end gap-1">
+                      <td className="p-4">
+                        <div className="flex items-center justify-end gap-2">
                           <EditExpenseDialog expense={e} onUpdated={load} />
                           <Button
                             variant="ghost"
                             size="icon"
+                            className="h-11 w-11"
                             onClick={() => void onDelete(e.id)}
                             aria-label={t("common.delete", "Delete")}
                           >
-                            <Trash2 className="h-4 w-4 text-chile" />
+                            <Trash2 className="h-5 w-5 text-chile" />
                           </Button>
                         </div>
                       </td>
@@ -299,21 +295,21 @@ export default function AdminExpensesPage() {
       {/* Manual revenue */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
+          <CardTitle className="font-display text-2xl">
             {t("admin.expenses.manualRevenue")}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-base">
               <thead>
-                <tr className="border-b border-nopal/10 text-left text-xs uppercase text-mole/60">
-                  <th className="p-3">{t("admin.expenses.col_date")}</th>
-                  <th className="p-3">{t("admin.expenses.col_description")}</th>
-                  <th className="p-3 text-right">
+                <tr className="border-b border-nopal/10 text-left text-sm uppercase text-mole/60">
+                  <th className="p-4">{t("admin.expenses.col_date")}</th>
+                  <th className="p-4">{t("admin.expenses.col_description")}</th>
+                  <th className="p-4 text-right">
                     {t("admin.expenses.col_lbs")}
                   </th>
-                  <th className="p-3 text-right">
+                  <th className="p-4 text-right">
                     {t("admin.expenses.col_amount")}
                   </th>
                 </tr>
@@ -321,21 +317,21 @@ export default function AdminExpensesPage() {
               <tbody>
                 {manual.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="p-6 text-center text-mole/60">
+                    <td colSpan={4} className="p-8 text-center text-lg text-mole/60">
                       {t("admin.expenses.noneManual")}
                     </td>
                   </tr>
                 ) : (
                   manual.map((m) => (
                     <tr key={m.id} className="border-b border-nopal/5">
-                      <td className="p-3">
+                      <td className="p-4">
                         {format(new Date(`${m.event_date}T12:00:00`), "MMM d")}
                       </td>
-                      <td className="p-3">{m.description ?? "—"}</td>
-                      <td className="p-3 text-right">
+                      <td className="p-4">{m.description ?? "—"}</td>
+                      <td className="p-4 text-right tabular-nums">
                         {m.lbs_sold != null ? Number(m.lbs_sold).toFixed(1) : "—"}
                       </td>
-                      <td className="p-3 text-right font-mono text-agave-sage">
+                      <td className="p-4 text-right font-display text-lg text-agave-sage tabular-nums">
                         {fmtMoney(Number(m.amount))}
                       </td>
                     </tr>
@@ -388,8 +384,8 @@ function AddExpenseDialog({ onCreated }: { onCreated: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="h-4 w-4" />
+        <Button size="lg">
+          <Plus className="h-5 w-5" />
           {t("admin.expenses.addExpense")}
         </Button>
       </DialogTrigger>
@@ -528,9 +524,10 @@ function EditExpenseDialog({
         <Button
           variant="ghost"
           size="icon"
+          className="h-11 w-11"
           aria-label={t("common.edit", "Edit")}
         >
-          <Pencil className="h-4 w-4 text-nopal" />
+          <Pencil className="h-5 w-5 text-nopal" />
         </Button>
       </DialogTrigger>
       <DialogContent>

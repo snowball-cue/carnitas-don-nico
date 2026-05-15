@@ -33,28 +33,27 @@ export default async function AdminCateringPage() {
   const rows = (data as CateringRequestRow[] | null) ?? [];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <AdminCateringTitle />
 
       <Card>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-base">
               <thead>
-                <tr className="border-b border-nopal/10 bg-papel text-left text-xs uppercase tracking-wide text-mole/60">
-                  <th className="p-3">Ref</th>
-                  <th className="p-3">Name</th>
-                  <th className="p-3">Event date</th>
-                  <th className="p-3 text-right">Guests</th>
-                  <th className="p-3 text-right">Est. lbs</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Created</th>
+                <tr className="border-b border-nopal/10 bg-papel text-left text-sm uppercase tracking-wide text-mole/60">
+                  <th className="p-4">Customer</th>
+                  <th className="p-4">Event date</th>
+                  <th className="p-4 text-right">Guests</th>
+                  <th className="p-4 text-right">Est. lbs</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4">Submitted</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="p-6 text-center text-mole/60">
+                    <td colSpan={6} className="p-8 text-center text-lg text-mole/60">
                       No catering requests yet.
                     </td>
                   </tr>
@@ -64,32 +63,33 @@ export default async function AdminCateringPage() {
                       key={r.id}
                       className="border-b border-nopal/5 hover:bg-papel/40"
                     >
-                      <td className="p-3 font-mono">
+                      <td className="p-4">
                         <Link
                           href={`/admin/catering/${r.id}`}
-                          className="text-nopal hover:underline"
+                          className="block group"
                         >
-                          {refFromId(r.id)}
+                          <div className="text-lg font-semibold text-mole group-hover:text-nopal">
+                            {r.full_name}
+                          </div>
+                          <div className="text-sm text-mole/60">
+                            {refFromId(r.id)} · {r.phone}
+                          </div>
                         </Link>
                       </td>
-                      <td className="p-3">
-                        <div className="font-medium">{r.full_name}</div>
-                        <div className="text-xs text-mole/60">{r.phone}</div>
+                      <td className="p-4">
+                        {format(new Date(`${r.event_date}T12:00:00`), "EEE, MMM d, yyyy")}
                       </td>
-                      <td className="p-3">
-                        {format(new Date(`${r.event_date}T12:00:00`), "MMM d, yyyy")}
-                      </td>
-                      <td className="p-3 text-right">{r.guest_count}</td>
-                      <td className="p-3 text-right">
+                      <td className="p-4 text-right tabular-nums">{r.guest_count}</td>
+                      <td className="p-4 text-right tabular-nums">
                         {Number(r.estimated_lbs).toFixed(1)}
                       </td>
-                      <td className="p-3">
-                        <Badge variant={statusVariant(r.status)}>
+                      <td className="p-4">
+                        <Badge variant={statusVariant(r.status)} className="px-3 py-1 text-sm">
                           {r.status}
                         </Badge>
                       </td>
-                      <td className="p-3 text-xs text-mole/60">
-                        {format(new Date(r.created_at), "MMM d, HH:mm")}
+                      <td className="p-4 text-sm text-mole/60">
+                        {format(new Date(r.created_at), "MMM d, h:mm a")}
                       </td>
                     </tr>
                   ))

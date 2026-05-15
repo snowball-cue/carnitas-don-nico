@@ -23,55 +23,57 @@ export default async function AdminInvestmentsPage() {
   const total = rows.reduce((a, r) => a + Number(r.cost), 0);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-display text-2xl text-mole">Investments</h1>
+        <h1 className="font-display text-3xl md:text-4xl text-mole">Investments</h1>
         <InvestmentsClient />
       </div>
 
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm text-mole/70">Total invested</CardTitle>
+          <CardTitle className="text-base text-mole/70 font-medium">
+            Total invested
+          </CardTitle>
         </CardHeader>
-        <CardContent className="font-display text-3xl text-mole">
+        <CardContent className="font-display text-4xl text-mole tabular-nums">
           {fmtMoney(total)}
         </CardContent>
       </Card>
 
       <Card>
         <CardContent className="p-0 overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <thead>
-              <tr className="border-b border-nopal/10 text-left text-xs uppercase text-mole/60">
-                <th className="p-3">Item</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Purchased</th>
-                <th className="p-3 text-right">Cost</th>
+              <tr className="border-b border-nopal/10 text-left text-sm uppercase text-mole/60">
+                <th className="p-4">Item</th>
+                <th className="p-4">Category</th>
+                <th className="p-4">Purchased</th>
+                <th className="p-4 text-right">Cost</th>
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-6 text-center text-mole/60">
+                  <td colSpan={4} className="p-8 text-center text-lg text-mole/60">
                     No investments yet.
                   </td>
                 </tr>
               ) : (
                 rows.map((r) => (
                   <tr key={r.id} className="border-b border-nopal/5">
-                    <td className="p-3">
-                      <div className="font-medium">{r.item_name}</div>
+                    <td className="p-4">
+                      <div className="font-semibold text-mole">{r.item_name}</div>
                       {r.notes ? (
-                        <div className="text-xs text-mole/60">{r.notes}</div>
+                        <div className="text-sm text-mole/60">{r.notes}</div>
                       ) : null}
                     </td>
-                    <td className="p-3 text-xs font-mono text-mole/70">
+                    <td className="p-4 text-mole/70">
                       {r.category ?? "—"}
                     </td>
-                    <td className="p-3">
+                    <td className="p-4">
                       {format(new Date(`${r.purchase_date}T12:00:00`), "MMM d, yyyy")}
                     </td>
-                    <td className="p-3 text-right font-mono">
+                    <td className="p-4 text-right font-display text-lg text-mole tabular-nums">
                       {fmtMoney(Number(r.cost))}
                     </td>
                   </tr>

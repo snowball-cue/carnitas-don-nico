@@ -423,20 +423,24 @@
   },
   "admin": {
     "nav": {
-      "dashboard": "Dashboard",
+      "dashboard": "Home",
+      "home": "Home",
       "orders": "Orders",
       "catering": "Catering",
-      "calendar": "Calendar",
+      "calendar": "Pickup days",
       "menu": "Menu",
-      "expenses": "P&L / Expenses",
-      "shoppingList": "Shopping List",
+      "expenses": "Money",
+      "shoppingList": "Shopping list",
       "investments": "Investments",
       "receipts": "Receipts",
       "notifications": "Notifications",
       "customers": "Customers",
       "contacts": "Contacts",
       "groups": "Groups",
-      "broadcasts": "Broadcasts"
+      "broadcasts": "Messages",
+      "more": "More",
+      "sectionMain": "Main",
+      "sectionMore": "More"
     },
     "contacts": {
       "title": "Contacts",
@@ -559,31 +563,45 @@
       }
     },
     "dashboard": {
-      "title": "Dashboard",
-      "capacityLabel": "{{reserved}} / {{capacity}} lb",
-      "closedLabel": "Closed",
+      "title": "Home",
+      "capacityLabel": "{{reserved}} of {{capacity}} pounds reserved",
+      "closedLabel": "Orders closed",
+      "greetingGeneric": "Welcome back, {{name}}!",
       "greetingMorning": "Good morning, {{name}}!",
       "greetingAfternoon": "Good afternoon, {{name}}!",
       "greetingEvening": "Good evening, {{name}}!",
-      "subtitle": "Here's what's happening at the cazo.",
+      "subtitle": "Here's what's happening today.",
+      "todayLabel": "Today",
+      "todayIsPickup": "Today is pickup day.",
+      "pickupCountdown": "Next pickup is {{when}}.",
+      "noUpcomingPickupShort": "No pickup day on the calendar yet.",
       "nextPickup": "Next pickup",
-      "ordersOnDate": "{{count}} active orders",
+      "ordersOnDate": "{{count}} orders ready to cook",
       "noUpcomingPickup": "No upcoming pickup scheduled.",
-      "revenue": "Revenue",
-      "todayAndMtd": "Today & month-to-date",
+      "revenue": "Money this month",
+      "todayAndMtd": "Today and month-to-date",
       "today": "today",
-      "mtdValue": "{{amount}} MTD",
-      "orders": "Orders",
-      "ordersDescription": "New today",
+      "mtdValue": "{{amount}} so far this month",
+      "orders": "Orders today",
+      "ordersDescription": "Brand new orders",
       "newToday": "new today",
-      "pendingPickups": "{{count}} pending pickups",
+      "pendingPickups": "{{count}} orders waiting for pickup",
       "recentOrders": "Recent orders",
-      "viewAll": "View all",
+      "viewAll": "See all orders",
       "noRecentOrders": "No orders yet.",
-      "registeredCustomer": "Registered customer",
+      "registeredCustomer": "Customer",
       "notifications": "Notifications",
       "unread": "unread",
-      "viewNotifications": "View notifications"
+      "viewNotifications": "Open notifications",
+      "weekGlanceTitle": "This week at a glance",
+      "actionSeeOrders": "See today's orders",
+      "actionSeeOrdersHint": "Confirm, mark ready, or pick up",
+      "actionAddExpense": "Add an expense",
+      "actionAddExpenseHint": "Receipt, ingredient, gas, anything",
+      "actionNewPickup": "Add a pickup day",
+      "actionNewPickupHint": "Open a new Saturday for orders",
+      "actionMessage": "Message customers",
+      "actionMessageHint": "Send an email blast"
     },
     "orders": {
       "title": "Orders",
@@ -663,7 +681,9 @@
       "notifySubscribers": "Notify subscribers",
       "notifyTitle": "Notify subscribers",
       "notifyBody": "Send a notification about this pickup date?",
-      "notifyStub": "Notification sending is not configured yet."
+      "notifyStub": "Notification sending is not configured yet.",
+      "deleteConfirm": "Delete this pickup day? Customers won't be able to order for it.",
+      "hasOrders": "This day already has orders — cancel or move them before deleting."
     },
     "menu": {
       "title": "Menu",
@@ -680,7 +700,8 @@
       "uploadImage": "Upload image",
       "imageUploaded": "Image uploaded",
       "confirmDelete": "Delete this item?",
-      "created": "Menu item saved"
+      "created": "Menu item saved",
+      "category": "Category"
     },
     "expenses": {
       "title": "Expenses & Revenue",
@@ -702,7 +723,8 @@
       "col_category": "Category",
       "col_description": "Description",
       "col_amount": "Amount",
-      "col_lbs": "Lbs"
+      "col_lbs": "Lbs",
+      "editExpense": "Edit expense"
     },
     "shopping": {
       "title": "Shopping list",
@@ -755,9 +777,9 @@
     },
     "shell": {
       "title": "Admin",
-      "admin": "Admin",
-      "adminArea": "Admin area",
-      "backToSite": "Back to site",
+      "admin": "Owner",
+      "adminArea": "Owner dashboard",
+      "backToSite": "Sign out",
       "openMenu": "Open menu"
     }
   },

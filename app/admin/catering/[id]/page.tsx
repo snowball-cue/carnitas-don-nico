@@ -40,30 +40,33 @@ export default async function AdminCateringDetailPage({ params }: PageProps) {
     <div className="space-y-6">
       <Link
         href="/admin/catering"
-        className="inline-flex items-center gap-1 text-sm text-nopal hover:underline"
+        className="inline-flex items-center gap-1 text-base font-medium text-nopal hover:underline"
       >
-        <ArrowLeft className="h-3 w-3" /> Catering
+        <ArrowLeft className="h-4 w-4" /> Back to catering
       </Link>
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl text-mole font-mono">
-            {reference}
+          <p className="text-sm text-mole/60 font-mono">{reference}</p>
+          <h1 className="font-display text-3xl md:text-4xl text-mole">
+            {req.full_name}
           </h1>
-          <p className="text-sm text-mole/70">
+          <p className="text-base text-mole/70">
             Submitted {format(new Date(req.created_at), "PPp")}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <a
             href={`/api/catering/${req.id}/ics`}
-            className="inline-flex items-center gap-1.5 rounded-md border border-nopal/30 bg-nopal/5 px-3 py-1.5 text-sm font-medium text-nopal hover:bg-nopal/10"
+            className="inline-flex h-11 items-center gap-1.5 rounded-md border border-nopal/30 bg-nopal/5 px-4 text-base font-medium text-nopal hover:bg-nopal/10"
             download={`CarnitasDonNico-${reference}.ics`}
           >
-            <Calendar className="h-4 w-4" />
+            <Calendar className="h-5 w-5" />
             Download .ics
           </a>
-          <Badge variant="oro">{req.status}</Badge>
+          <Badge variant="oro" className="px-3 py-1 text-sm">
+            {req.status}
+          </Badge>
         </div>
       </div>
 
@@ -71,9 +74,9 @@ export default async function AdminCateringDetailPage({ params }: PageProps) {
         <div className="lg:col-span-2 space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Event</CardTitle>
+              <CardTitle className="font-display text-2xl">Event</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-2 text-base">
               <Field
                 label="Event date"
                 value={format(new Date(`${req.event_date}T12:00:00`), "PPP")}
@@ -147,9 +150,9 @@ export default async function AdminCateringDetailPage({ params }: PageProps) {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Contact customer</CardTitle>
+              <CardTitle className="font-display text-2xl">Contact customer</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-2 text-base">
               <p className="font-medium">{req.full_name}</p>
               <a
                 href={`tel:${req.phone}`}
@@ -175,7 +178,7 @@ export default async function AdminCateringDetailPage({ params }: PageProps) {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Activity</CardTitle>
+              <CardTitle className="font-display text-2xl">Activity</CardTitle>
             </CardHeader>
             <CardContent className="text-sm space-y-1">
               <Field

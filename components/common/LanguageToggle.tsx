@@ -3,6 +3,8 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { persistLocale } from "@/lib/i18n/client";
+import type { Locale } from "@/lib/i18n/config";
 
 interface LanguageToggleProps {
   className?: string;
@@ -14,9 +16,10 @@ export function LanguageToggle({ className, size = "md" }: LanguageToggleProps) 
   const current = (i18n.resolvedLanguage || i18n.language || "es").slice(0, 2);
 
   const change = React.useCallback(
-    (lng: "es" | "en") => {
+    (lng: Locale) => {
       if (lng === current) return;
       void i18n.changeLanguage(lng);
+      persistLocale(lng);
       if (typeof document !== "undefined") {
         document.documentElement.lang = lng;
       }

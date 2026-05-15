@@ -94,8 +94,8 @@ export default function AdminReceiptsPage() {
   };
 
   return (
-    <div className="space-y-4">
-      <h1 className="font-display text-2xl text-mole">
+    <div className="space-y-6">
+      <h1 className="font-display text-3xl md:text-4xl text-mole">
         {t("admin.receipts.title")}
       </h1>
 

@@ -79,60 +79,53 @@ export default async function AdminCustomersPage() {
     .sort((a, b) => b.ltv - a.ltv);
 
   return (
-    <div className="space-y-4">
-      <h1 className="font-display text-2xl text-mole">Customers</h1>
+    <div className="space-y-6">
+      <h1 className="font-display text-3xl md:text-4xl text-mole">Customers</h1>
       <Card>
         <CardContent className="p-0 overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <thead>
-              <tr className="border-b border-nopal/10 text-left text-xs uppercase text-mole/60">
-                <th className="p-3">Name</th>
-                <th className="p-3">Contact</th>
-                <th className="p-3 text-right">Orders</th>
-                <th className="p-3 text-right">Total lbs</th>
-                <th className="p-3 text-right">LTV</th>
-                <th className="p-3">Last order</th>
+              <tr className="border-b border-nopal/10 text-left text-sm uppercase text-mole/60">
+                <th className="p-4">Customer</th>
+                <th className="p-4 text-right">Orders</th>
+                <th className="p-4 text-right">Total lbs</th>
+                <th className="p-4 text-right">Total spent</th>
+                <th className="p-4">Last order</th>
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-6 text-center text-mole/60">
+                  <td colSpan={5} className="p-8 text-center text-lg text-mole/60">
                     No customers yet.
                   </td>
                 </tr>
               ) : (
                 rows.map((c) => (
-                  <tr key={c.id} className="border-b border-nopal/5">
-                    <td className="p-3">
+                  <tr key={c.id} className="border-b border-nopal/5 hover:bg-papel/40">
+                    <td className="p-4">
                       <Link
                         href={`/admin/customers/${c.id}`}
-                        className="text-nopal hover:underline font-medium"
+                        className="block group"
                       >
-                        {c.full_name ?? "—"}
+                        <div className="text-lg font-semibold text-mole group-hover:text-nopal">
+                          {c.full_name ?? "—"}
+                        </div>
+                        <div className="text-sm text-mole/60">
+                          {[c.email, c.phone].filter(Boolean).join(" · ") || "—"}
+                        </div>
                       </Link>
-                      <div className="text-xs text-mole/50 font-mono">
-                        {c.referral_code}
-                      </div>
                     </td>
-                    <td className="p-3">
-                      <div className="text-xs text-mole/70">
-                        {c.email ?? "—"}
-                      </div>
-                      <div className="text-xs text-mole/70">
-                        {c.phone ?? ""}
-                      </div>
-                    </td>
-                    <td className="p-3 text-right">{c.order_count}</td>
-                    <td className="p-3 text-right">
+                    <td className="p-4 text-right tabular-nums">{c.order_count}</td>
+                    <td className="p-4 text-right tabular-nums">
                       {c.total_lbs.toFixed(1)}
                     </td>
-                    <td className="p-3 text-right font-mono">
+                    <td className="p-4 text-right font-display text-lg text-mole tabular-nums">
                       {fmtMoney(c.ltv)}
                     </td>
-                    <td className="p-3">
+                    <td className="p-4">
                       {c.last_order_at
-                        ? format(new Date(c.last_order_at), "MMM d")
+                        ? format(new Date(c.last_order_at), "MMM d, yyyy")
                         : "—"}
                     </td>
                   </tr>

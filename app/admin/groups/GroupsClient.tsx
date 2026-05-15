@@ -69,16 +69,16 @@ export function GroupsClient({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl text-mole">
+          <h1 className="font-display text-3xl md:text-4xl text-mole">
             {t("admin.groups.title")}
           </h1>
-          <p className="text-sm text-mole/60">{t("admin.groups.subtitle")}</p>
+          <p className="text-base text-mole/60">{t("admin.groups.subtitle")}</p>
         </div>
-        <Button onClick={openNew}>
-          <Plus className="h-4 w-4" />
+        <Button size="lg" onClick={openNew}>
+          <Plus className="h-5 w-5" />
           {t("admin.groups.newGroup")}
         </Button>
       </div>

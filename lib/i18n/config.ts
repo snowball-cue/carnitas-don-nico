@@ -8,6 +8,7 @@ export const namespaces = ["translation"] as const;
 export const defaultNamespace = "translation";
 
 export const LOCALE_STORAGE_KEY = "carnitas-dn-locale";
+export const LOCALE_COOKIE_KEY = "carnitas-dn-locale";
 
 export const localeLabels: Record<Locale, string> = {
   es: "Español",

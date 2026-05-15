@@ -175,29 +175,29 @@ export default function AdminMenuPage() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl text-mole">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <h1 className="font-display text-3xl md:text-4xl text-mole">
           {t("admin.menu.title")}
         </h1>
         <AddItemDialog onCreated={() => void load()} />
       </div>
 
       {loading ? (
-        <p className="text-mole/60">{t("common.loading")}</p>
+        <p className="text-lg text-mole/60">{t("common.loading")}</p>
       ) : (
         <div className="space-y-3">
           {items.map((item) => (
             <Card key={item.id}>
               <CardContent className="p-4 space-y-3">
                 <div className="flex flex-wrap items-start gap-3">
-                  <div className="relative h-20 w-20 bg-papel rounded-md overflow-hidden shrink-0 border border-nopal/10">
+                  <div className="relative h-24 w-24 bg-papel rounded-md overflow-hidden shrink-0 border border-nopal/10">
                     {item.image_url ? (
                       <Image
                         src={item.image_url}
                         alt={item.name_en}
                         fill
-                        sizes="80px"
+                        sizes="96px"
                         className="object-cover"
                       />
                     ) : (

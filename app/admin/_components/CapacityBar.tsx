@@ -14,17 +14,19 @@ export function CapacityBar({
   const color = pct >= 90 ? "bg-chile" : pct >= 70 ? "bg-oro" : "bg-agave";
   return (
     <div>
-      <div className="flex justify-between text-sm text-mole/80 mb-1">
+      <div className="flex justify-between text-base text-mole/80 mb-1.5">
         <span>
           {t("admin.dashboard.capacityLabel", {
             reserved: reserved.toFixed(1),
             capacity: capacity.toFixed(1),
           })}
         </span>
-        <span className="font-semibold text-mole">{pct}%</span>
+        <span className="font-display font-semibold text-mole tabular-nums">
+          {pct}%
+        </span>
       </div>
       <div
-        className="h-3 w-full rounded-full bg-papel-warm overflow-hidden"
+        className="h-4 w-full rounded-full bg-papel-warm overflow-hidden ring-1 ring-mole/10"
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}

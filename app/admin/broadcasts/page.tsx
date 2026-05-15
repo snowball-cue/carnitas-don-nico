@@ -42,38 +42,40 @@ export default async function AdminBroadcastsPage() {
   const rows = (data as BroadcastCampaignRow[] | null) ?? [];
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl text-mole">Broadcasts</h1>
-          <p className="text-sm text-mole/60">Send email to your customers</p>
+          <h1 className="font-display text-3xl md:text-4xl text-mole">
+            Messages
+          </h1>
+          <p className="text-base text-mole/60">Send email to your customers</p>
         </div>
         <Link href="/admin/broadcasts/new">
-          <Button>
-            <Plus className="h-4 w-4" />
-            New broadcast
+          <Button size="lg">
+            <Plus className="h-5 w-5" />
+            New message
           </Button>
         </Link>
       </div>
 
       <Card>
         <CardContent className="p-0 overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <thead>
-              <tr className="border-b border-nopal/10 text-left text-xs uppercase tracking-wide text-mole/60">
-                <th className="p-3">Subject</th>
-                <th className="p-3">Status</th>
-                <th className="p-3 text-right">Recipients</th>
-                <th className="p-3 text-right">Delivered</th>
-                <th className="p-3 text-right">Failed</th>
-                <th className="p-3">Sent</th>
+              <tr className="border-b border-nopal/10 text-left text-sm uppercase tracking-wide text-mole/60">
+                <th className="p-4">Subject</th>
+                <th className="p-4">Status</th>
+                <th className="p-4 text-right">Recipients</th>
+                <th className="p-4 text-right">Delivered</th>
+                <th className="p-4 text-right">Failed</th>
+                <th className="p-4">Sent</th>
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-6 text-center text-mole/60">
-                    No broadcasts yet.
+                  <td colSpan={6} className="p-8 text-center text-lg text-mole/60">
+                    No messages yet.
                   </td>
                 </tr>
               ) : (
@@ -82,30 +84,38 @@ export default async function AdminBroadcastsPage() {
                     key={r.id}
                     className="border-b border-nopal/5 hover:bg-papel/40"
                   >
-                    <td className="p-3">
+                    <td className="p-4">
                       <Link
                         href={`/admin/broadcasts/${r.id}`}
-                        className="text-nopal hover:underline font-medium"
+                        className="block group"
                       >
-                        {r.subject}
+                        <div className="text-lg font-semibold text-mole group-hover:text-nopal">
+                          {r.subject}
+                        </div>
+                        <div className="text-sm text-mole/50">
+                          {r.locale.toUpperCase()}
+                        </div>
                       </Link>
-                      <div className="text-xs text-mole/50">
-                        {r.locale.toUpperCase()}
-                      </div>
                     </td>
-                    <td className="p-3">
-                      <Badge variant={statusVariant(r.status)}>
+                    <td className="p-4">
+                      <Badge variant={statusVariant(r.status)} className="px-3 py-1 text-sm">
                         {r.status}
                       </Badge>
                     </td>
-                    <td className="p-3 text-right">{r.total_recipients}</td>
-                    <td className="p-3 text-right">{r.delivered_count}</td>
-                    <td className="p-3 text-right">{r.failed_count}</td>
-                    <td className="p-3 text-xs text-mole/60">
+                    <td className="p-4 text-right tabular-nums">
+                      {r.total_recipients}
+                    </td>
+                    <td className="p-4 text-right tabular-nums">
+                      {r.delivered_count}
+                    </td>
+                    <td className="p-4 text-right tabular-nums">
+                      {r.failed_count}
+                    </td>
+                    <td className="p-4 text-sm text-mole/60">
                       {r.finished_at
-                        ? format(new Date(r.finished_at), "MMM d, HH:mm")
+                        ? format(new Date(r.finished_at), "MMM d, h:mm a")
                         : r.started_at
-                          ? format(new Date(r.started_at), "MMM d, HH:mm")
+                          ? format(new Date(r.started_at), "MMM d, h:mm a")
                           : "—"}
                     </td>
                   </tr>

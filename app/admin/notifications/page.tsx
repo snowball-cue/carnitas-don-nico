@@ -22,38 +22,44 @@ export default async function AdminNotificationsPage() {
   const rows = (data ?? []) as NotificationRow[];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-display text-2xl text-mole">Notifications</h1>
+        <h1 className="font-display text-3xl md:text-4xl text-mole">
+          Notifications
+        </h1>
         <MarkAllReadButton />
       </div>
 
       {rows.length === 0 ? (
         <Card>
-          <CardContent className="p-6 text-center text-mole/60">
-            No notifications yet.
+          <CardContent className="p-8 text-center text-lg text-mole/60">
+            All caught up.
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-2">
           {rows.map((n) => (
-            <Card key={n.id} className={n.read_at ? "opacity-70" : ""}>
-              <CardContent className="p-4 flex items-start gap-3">
+            <Card key={n.id} className={n.read_at ? "opacity-60" : ""}>
+              <CardContent className="p-5 flex items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <Badge variant="outline">{n.type}</Badge>
+                    <Badge variant="outline" className="px-3 py-1 text-sm">
+                      {n.type}
+                    </Badge>
                     {!n.read_at ? (
-                      <Badge variant="oro" shape="pill">
+                      <Badge variant="oro" shape="pill" className="px-3 py-1 text-sm">
                         new
                       </Badge>
                     ) : null}
-                    <span className="text-xs text-mole/50">
+                    <span className="text-sm text-mole/50">
                       {format(new Date(n.created_at), "PPp")}
                     </span>
                   </div>
-                  <p className="font-medium text-mole mt-1">{n.title}</p>
+                  <p className="text-lg font-semibold text-mole mt-2">
+                    {n.title}
+                  </p>
                   {n.body ? (
-                    <p className="text-sm text-mole/70">{n.body}</p>
+                    <p className="text-base text-mole/70 mt-1">{n.body}</p>
                   ) : null}
                 </div>
                 {!n.read_at ? <MarkReadInline id={n.id} /> : null}

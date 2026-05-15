@@ -114,44 +114,49 @@ export function OrderActions({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
+          <CardTitle className="font-display text-2xl">
             {t("admin.orderDetail.statusTitle")}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-2">
           <Button
+            size="lg"
             variant="default"
             onClick={() => doStatus("confirmed")}
             disabled={pending || status === "confirmed"}
           >
-            <CheckCircle2 className="h-4 w-4" />
+            <CheckCircle2 className="h-5 w-5" />
             {t("admin.orderDetail.confirm")}
           </Button>
           <Button
+            size="lg"
             variant="oro"
             onClick={() => doStatus("ready")}
             disabled={pending || status === "ready"}
           >
-            <Flame className="h-4 w-4" />
+            <Flame className="h-5 w-5" />
             {t("admin.orderDetail.markReady")}
           </Button>
           <Button
+            size="lg"
             variant="outline"
             onClick={() => doStatus("picked_up")}
             disabled={pending || status === "picked_up"}
           >
-            <HandCoins className="h-4 w-4" />
+            <HandCoins className="h-5 w-5" />
             {t("admin.orderDetail.markPickedUp")}
           </Button>
           <Button
+            size="lg"
             variant="destructive"
             onClick={() => doStatus("cancelled")}
             disabled={pending || status === "cancelled"}
           >
-            <XCircle className="h-4 w-4" />
+            <XCircle className="h-5 w-5" />
             {t("admin.orderDetail.cancel")}
           </Button>
           <Button
+            size="lg"
             variant="ghost"
             onClick={() => doStatus("no_show")}
             disabled={pending || status === "no_show"}
@@ -160,13 +165,14 @@ export function OrderActions({
             {t("admin.orderDetail.markNoShow")}
           </Button>
           <Button
+            size="lg"
             variant="outline"
             className="col-span-2"
             onClick={() =>
               toast.info(t("admin.orderDetail.smsStub"))
             }
           >
-            <MessageSquare className="h-4 w-4" />
+            <MessageSquare className="h-5 w-5" />
             {t("admin.orderDetail.sendSms")}
           </Button>
         </CardContent>
@@ -174,7 +180,7 @@ export function OrderActions({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
+          <CardTitle className="font-display text-2xl">
             {t("admin.orderDetail.paymentTitle")}
           </CardTitle>
         </CardHeader>
@@ -186,9 +192,10 @@ export function OrderActions({
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               aria-label={t("admin.orderDetail.amount")}
+              className="h-12 text-base"
             />
             <Select value={method} onValueChange={(v) => setMethod(v as PaymentMethod)}>
-              <SelectTrigger>
+              <SelectTrigger className="h-12 text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -201,10 +208,10 @@ export function OrderActions({
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={doPayment} disabled={pending} className="w-full">
+          <Button size="lg" onClick={doPayment} disabled={pending} className="w-full">
             {t("admin.orderDetail.recordPayment")}
           </Button>
-          <p className="text-xs text-mole/60">
+          <p className="text-sm text-mole/60">
             {t("admin.orderDetail.paidSoFar", {
               paid: depositPaid.toFixed(2),
               total: total.toFixed(2),
@@ -215,7 +222,7 @@ export function OrderActions({
 
       <Card className="md:col-span-2">
         <CardHeader>
-          <CardTitle className="text-base">
+          <CardTitle className="font-display text-2xl">
             {t("admin.orderDetail.notes")}
           </CardTitle>
         </CardHeader>
@@ -225,9 +232,10 @@ export function OrderActions({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder={t("admin.orderDetail.notesPlaceholder")}
+            className="text-base"
           />
           <div className="flex justify-end">
-            <Button onClick={doNotes} disabled={pending}>
+            <Button size="lg" onClick={doNotes} disabled={pending}>
               {t("common.save")}
             </Button>
           </div>
@@ -236,20 +244,21 @@ export function OrderActions({
 
       <Card className="md:col-span-2 border-destructive/30">
         <CardHeader>
-          <CardTitle className="text-base text-destructive">
+          <CardTitle className="font-display text-2xl text-destructive">
             {t("admin.orderDetail.dangerZone")}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-between gap-3">
-          <p className="text-sm text-mole/70">
+        <CardContent className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-base text-mole/70 flex-1 min-w-[200px]">
             {t("admin.orderDetail.deleteHelp")}
           </p>
           <Button
+            size="lg"
             variant="destructive"
             onClick={() => setDeleteOpen(true)}
             disabled={pending}
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-5 w-5" />
             {t("admin.orderDetail.deleteOrder")}
           </Button>
         </CardContent>

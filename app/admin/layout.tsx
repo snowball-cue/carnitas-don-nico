@@ -45,8 +45,8 @@ export default async function AdminLayout({
         }}
         unreadCount={unreadCount ?? 0}
       />
-      <div className="md:pl-64">
-        <main className="container max-w-none mx-auto px-4 py-6 md:py-8">
+      <div className="md:pl-72">
+        <main className="container max-w-none mx-auto px-4 py-6 md:py-10">
           {children}
         </main>
       </div>

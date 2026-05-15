@@ -1,8 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, Caveat } from "next/font/google";
+import { cookies } from "next/headers";
 import { Toaster } from "sonner";
 import { Providers } from "./providers";
 import { HeaderClient, FooterClient, MobileNavClient } from "./_chrome";
+import {
+  defaultLocale,
+  LOCALE_COOKIE_KEY,
+  locales,
+  type Locale,
+} from "@/lib/i18n/config";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -72,19 +79,27 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const cookieValue = cookieStore.get(LOCALE_COOKIE_KEY)?.value;
+  const initialLocale: Locale = (locales as readonly string[]).includes(
+    cookieValue ?? "",
+  )
+    ? (cookieValue as Locale)
+    : defaultLocale;
+
   return (
     <html
-      lang="es"
+      lang={initialLocale}
       suppressHydrationWarning
       className={`${fraunces.variable} ${inter.variable} ${caveat.variable}`}
     >
       <body className="bg-papel text-mole font-sans antialiased min-h-screen flex flex-col">
-        <Providers>
+        <Providers initialLocale={initialLocale}>
           <HeaderClient />
           <main className="flex-1 pb-20 md:pb-0">{children}</main>
           <FooterClient />

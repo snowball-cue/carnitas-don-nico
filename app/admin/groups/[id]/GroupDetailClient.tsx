@@ -80,15 +80,15 @@ export function GroupDetailClient({
           </Button>
         </Link>
         <div className="flex-1 min-w-0">
-          <h1 className="font-display text-2xl text-mole truncate">
+          <h1 className="font-display text-3xl md:text-4xl text-mole truncate">
             {group.name}
           </h1>
           {group.description ? (
-            <p className="text-sm text-mole/60">{group.description}</p>
+            <p className="text-base text-mole/60">{group.description}</p>
           ) : null}
         </div>
-        <Button onClick={() => setAddOpen(true)}>
-          <Plus className="h-4 w-4" />
+        <Button size="lg" onClick={() => setAddOpen(true)}>
+          <Plus className="h-5 w-5" />
           {t("admin.groups.addMembers")}
         </Button>
       </div>

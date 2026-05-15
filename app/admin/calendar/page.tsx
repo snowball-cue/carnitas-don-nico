@@ -189,15 +189,15 @@ export default function AdminCalendarPage() {
   const existing = pickups.find((p) => p.pickup_date === ymd(selected));
 
   return (
-    <div className="space-y-4">
-      <h1 className="font-display text-2xl text-mole">
+    <div className="space-y-6">
+      <h1 className="font-display text-3xl md:text-4xl text-mole">
         {t("admin.calendar.title")}
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="font-display text-2xl">
               {t("admin.calendar.selectDate")}
             </CardTitle>
           </CardHeader>
@@ -212,7 +212,7 @@ export default function AdminCalendarPage() {
                 pickup: "bg-oro/30 text-mole font-semibold rounded-md",
               }}
             />
-            <p className="text-xs text-mole/60 mt-2">
+            <p className="text-sm text-mole/60 mt-3">
               {t("admin.calendar.legend")}
             </p>
           </CardContent>
@@ -220,22 +220,22 @@ export default function AdminCalendarPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">
+            <CardTitle className="font-display text-2xl">
               {existing
                 ? t("admin.calendar.editTitle")
                 : t("admin.calendar.createTitle")}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
             {existing ? (
-              <div className="rounded-md bg-papel p-3 text-sm text-mole/80">
-                <p>
-                  <span className="font-semibold text-mole">
+              <div className="rounded-xl bg-papel-warm/60 p-4 text-base text-mole/80 ring-1 ring-oro/20">
+                <p className="text-lg">
+                  <span className="font-display text-mole">
                     {Number(existing.reserved_lbs).toFixed(1)}
                   </span>{" "}
                   / {Number(existing.capacity_lbs).toFixed(1)} lbs
                 </p>
-                <p className="text-xs">
+                <p className="text-sm mt-1">
                   {t("admin.calendar.pendingOrders", { count: orderCount })}
                 </p>
               </div>
@@ -323,12 +323,13 @@ export default function AdminCalendarPage() {
               />
             </div>
 
-            <div className="flex flex-wrap gap-2 pt-2">
-              <Button onClick={onSave} disabled={pending}>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button size="lg" onClick={onSave} disabled={pending}>
                 {existing ? t("common.save") : t("admin.calendar.create")}
               </Button>
               {existing ? (
                 <Button
+                  size="lg"
                   variant="oro"
                   onClick={onNotify}
                   disabled={pending}
@@ -339,6 +340,7 @@ export default function AdminCalendarPage() {
               ) : null}
               {existing ? (
                 <Button
+                  size="lg"
                   variant="destructive"
                   onClick={onDelete}
                   disabled={pending}

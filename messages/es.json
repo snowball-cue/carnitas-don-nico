@@ -423,12 +423,13 @@
   },
   "admin": {
     "nav": {
-      "dashboard": "Panel de control",
+      "dashboard": "Inicio",
+      "home": "Inicio",
       "orders": "Pedidos",
       "catering": "Catering",
-      "calendar": "Calendario",
+      "calendar": "Días de recogida",
       "menu": "Menú",
-      "expenses": "P&G / Gastos",
+      "expenses": "Dinero",
       "shoppingList": "Lista de compras",
       "investments": "Inversiones",
       "receipts": "Recibos",
@@ -436,7 +437,10 @@
       "customers": "Clientes",
       "contacts": "Contactos",
       "groups": "Grupos",
-      "broadcasts": "Envíos"
+      "broadcasts": "Mensajes",
+      "more": "Más",
+      "sectionMain": "Principal",
+      "sectionMore": "Más"
     },
     "contacts": {
       "title": "Contactos",
@@ -559,31 +563,45 @@
       }
     },
     "dashboard": {
-      "title": "Panel de control",
-      "capacityLabel": "{{reserved}} / {{capacity}} lb",
-      "closedLabel": "Cerrado",
+      "title": "Inicio",
+      "capacityLabel": "{{reserved}} de {{capacity}} libras reservadas",
+      "closedLabel": "Pedidos cerrados",
+      "greetingGeneric": "¡Bienvenido, {{name}}!",
       "greetingMorning": "¡Buenos días, {{name}}!",
       "greetingAfternoon": "¡Buenas tardes, {{name}}!",
       "greetingEvening": "¡Buenas noches, {{name}}!",
-      "subtitle": "Esto es lo que está pasando en el cazo.",
-      "nextPickup": "Próxima recolección",
-      "ordersOnDate": "{{count}} pedidos activos",
-      "noUpcomingPickup": "No hay próxima recolección programada.",
-      "revenue": "Ingresos",
+      "subtitle": "Esto es lo que está pasando hoy.",
+      "todayLabel": "Hoy",
+      "todayIsPickup": "Hoy es día de recogida.",
+      "pickupCountdown": "La próxima recogida es {{when}}.",
+      "noUpcomingPickupShort": "Aún no hay día de recogida en el calendario.",
+      "nextPickup": "Próxima recogida",
+      "ordersOnDate": "{{count}} pedidos listos para cocinar",
+      "noUpcomingPickup": "No hay próxima recogida programada.",
+      "revenue": "Dinero este mes",
       "todayAndMtd": "Hoy y mes a la fecha",
       "today": "hoy",
-      "mtdValue": "{{amount}} mes a la fecha",
-      "orders": "Pedidos",
-      "ordersDescription": "Nuevos hoy",
+      "mtdValue": "{{amount}} este mes",
+      "orders": "Pedidos hoy",
+      "ordersDescription": "Pedidos nuevos",
       "newToday": "nuevos hoy",
-      "pendingPickups": "{{count}} recolecciones pendientes",
+      "pendingPickups": "{{count}} pedidos esperando recogida",
       "recentOrders": "Pedidos recientes",
-      "viewAll": "Ver todos",
+      "viewAll": "Ver todos los pedidos",
       "noRecentOrders": "Aún no hay pedidos.",
-      "registeredCustomer": "Cliente registrado",
+      "registeredCustomer": "Cliente",
       "notifications": "Notificaciones",
       "unread": "sin leer",
-      "viewNotifications": "Ver notificaciones"
+      "viewNotifications": "Abrir notificaciones",
+      "weekGlanceTitle": "Esta semana de un vistazo",
+      "actionSeeOrders": "Ver pedidos de hoy",
+      "actionSeeOrdersHint": "Confirmar, marcar listo o entregar",
+      "actionAddExpense": "Agregar un gasto",
+      "actionAddExpenseHint": "Recibo, ingredientes, gasolina, lo que sea",
+      "actionNewPickup": "Agregar día de recogida",
+      "actionNewPickupHint": "Abrir un nuevo sábado para pedidos",
+      "actionMessage": "Mensaje a clientes",
+      "actionMessageHint": "Enviar correo a todos"
     },
     "orders": {
       "title": "Pedidos",
@@ -663,7 +681,9 @@
       "notifySubscribers": "Notificar suscriptores",
       "notifyTitle": "Notificar suscriptores",
       "notifyBody": "¿Enviar una notificación sobre esta fecha de recolección?",
-      "notifyStub": "El envío de notificaciones aún no está configurado."
+      "notifyStub": "El envío de notificaciones aún no está configurado.",
+      "deleteConfirm": "¿Eliminar este día de recogida? Los clientes no podrán hacer pedidos para este día.",
+      "hasOrders": "Este día ya tiene pedidos — cancélalos o muévelos antes de eliminar."
     },
     "menu": {
       "title": "Menú",
@@ -680,7 +700,8 @@
       "uploadImage": "Subir imagen",
       "imageUploaded": "Imagen subida",
       "confirmDelete": "¿Eliminar este artículo?",
-      "created": "Artículo guardado"
+      "created": "Artículo guardado",
+      "category": "Categoría"
     },
     "expenses": {
       "title": "Gastos e Ingresos",
@@ -702,7 +723,8 @@
       "col_category": "Categoría",
       "col_description": "Descripción",
       "col_amount": "Monto",
-      "col_lbs": "Lbs"
+      "col_lbs": "Lbs",
+      "editExpense": "Editar gasto"
     },
     "shopping": {
       "title": "Lista de compras",
@@ -755,9 +777,9 @@
     },
     "shell": {
       "title": "Admin",
-      "admin": "Admin",
-      "adminArea": "Área de administración",
-      "backToSite": "Volver al sitio",
+      "admin": "Dueño",
+      "adminArea": "Panel del dueño",
+      "backToSite": "Cerrar sesión",
       "openMenu": "Abrir menú"
     }
   },

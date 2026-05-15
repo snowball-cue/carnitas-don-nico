@@ -58,13 +58,15 @@ export default async function AdminBroadcastDetailPage({
           </Button>
         </Link>
         <div className="flex-1 min-w-0">
-          <h1 className="font-display text-2xl text-mole truncate">
+          <h1 className="font-display text-3xl md:text-4xl text-mole truncate">
             {campaign.subject}
           </h1>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <Badge variant="outline">{campaign.locale.toUpperCase()}</Badge>
-            <Badge>{campaign.status}</Badge>
-            <span className="text-xs text-mole/60">
+            <Badge variant="outline" className="px-3 py-1 text-sm">
+              {campaign.locale.toUpperCase()}
+            </Badge>
+            <Badge className="px-3 py-1 text-sm">{campaign.status}</Badge>
+            <span className="text-sm text-mole/60">
               Created {format(new Date(campaign.created_at), "PPp")}
             </span>
           </div>

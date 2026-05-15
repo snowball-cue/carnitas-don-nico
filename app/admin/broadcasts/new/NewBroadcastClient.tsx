@@ -165,12 +165,14 @@ export function NewBroadcastClient({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl text-mole">
+        <h1 className="font-display text-3xl md:text-4xl text-mole">
           {t("admin.broadcasts.newBroadcast")}
         </h1>
-        <p className="text-sm text-mole/60">{t("admin.broadcasts.subtitle")}</p>
+        <p className="text-base text-mole/60">
+          {t("admin.broadcasts.subtitle")}
+        </p>
       </div>
 
       {isTestMode ? (

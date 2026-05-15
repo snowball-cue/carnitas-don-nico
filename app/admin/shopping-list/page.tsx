@@ -96,9 +96,9 @@ export default function AdminShoppingListPage() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="font-display text-2xl text-mole">
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-3xl md:text-4xl text-mole">
           {t("admin.shopping.title")}
         </h1>
         <Input
