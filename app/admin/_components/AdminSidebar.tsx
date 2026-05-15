@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import {
   Home,
   ShoppingBag,
@@ -217,7 +218,23 @@ function NavGroups({
 
 function UserFooter({ user }: { user: AdminUserSummary }) {
   const { t } = useTranslation();
+  const router = useRouter();
+  const [pending, setPending] = React.useState(false);
   const initial = (user.fullName ?? user.email ?? "?").charAt(0).toUpperCase();
+
+  const onSignOut = React.useCallback(async () => {
+    if (pending) return;
+    setPending(true);
+    try {
+      const supabase = createBrowserSupabaseClient();
+      await supabase.auth.signOut();
+      router.replace("/");
+      router.refresh();
+    } finally {
+      setPending(false);
+    }
+  }, [pending, router]);
+
   return (
     <div className="border-t border-papel/10 p-4">
       <div className="flex items-center gap-3">
@@ -230,14 +247,16 @@ function UserFooter({ user }: { user: AdminUserSummary }) {
           </p>
           <p className="truncate text-xs text-papel/60">{user.email}</p>
         </div>
-        <Link
-          href="/logout"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-papel/70 hover:bg-papel/10 hover:text-papel"
+        <button
+          type="button"
+          onClick={() => void onSignOut()}
+          disabled={pending}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-papel/70 hover:bg-papel/10 hover:text-papel disabled:opacity-50"
           title={t("admin.shell.backToSite")}
           aria-label={t("admin.shell.backToSite")}
         >
           <LogOut className="h-5 w-5" />
-        </Link>
+        </button>
       </div>
     </div>
   );
