@@ -36,16 +36,20 @@ export function Header() {
   const itemCount = useCartStore((s) => s.lines.length);
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const isAdminRoute = pathname.startsWith("/admin");
 
-  // Admin routes have their own sidebar/topbar — don't double-stack headers.
-  if (pathname.startsWith("/admin")) return null;
-
+  // All hooks must run on every render — never put hooks below a conditional
+  // return, or React will throw when pathname changes from admin → non-admin.
   React.useEffect(() => {
+    if (isAdminRoute) return;
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isAdminRoute]);
+
+  // Admin routes have their own sidebar/topbar — don't double-stack headers.
+  if (isAdminRoute) return null;
 
   const nav: Array<{ href: string; label: string; show: boolean }> = [
     { href: "/menu", label: t("nav.menu"), show: true },
