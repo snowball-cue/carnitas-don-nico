@@ -13,7 +13,7 @@ import {
 const isBrowser = typeof window !== "undefined";
 
 function readCookieLocale(): Locale | undefined {
-  if (!isBrowser || typeof document === "undefined") return undefined;
+  if (typeof document === "undefined") return undefined;
   const match = document.cookie.match(
     new RegExp(`(?:^|; )${LOCALE_COOKIE_KEY}=([^;]+)`),
   );
@@ -37,30 +37,42 @@ function readStorageLocale(): Locale | undefined {
   return undefined;
 }
 
-export function ensureI18n(initialLng?: Locale | null): typeof i18n {
-  // On the server we always init eagerly. On the client we wait until the
-  // caller passes an explicit `initialLng` (driven by I18nProvider, seeded
-  // from the SSR cookie) — otherwise we'd race localStorage against SSR
-  // and mismatch the very first render.
-  const canInit = !isBrowser || typeof initialLng !== "undefined";
+function pickInitialLocale(explicit?: Locale | null): Locale {
+  if (explicit) return explicit;
+  // Browser: cookie is the SSR source of truth — read it BEFORE React mounts
+  // so the very first render matches what the server rendered.
+  if (isBrowser) {
+    return readCookieLocale() ?? defaultLocale;
+  }
+  return defaultLocale;
+}
 
-  if (!i18n.isInitialized) {
-    if (!canInit) return i18n;
-    void i18n.use(initReactI18next).init({
-      resources: {
-        en: { translation: en },
-        es: { translation: es },
-      },
-      lng: initialLng ?? defaultLocale,
-      fallbackLng: defaultLocale,
-      supportedLngs: [...locales],
-      defaultNS: "translation",
-      interpolation: { escapeValue: false },
-      react: { useSuspense: false },
-      initImmediate: false,
-    });
-  } else if (initialLng && i18n.language !== initialLng) {
-    void i18n.changeLanguage(initialLng);
+function initOnce(lng: Locale): void {
+  if (i18n.isInitialized) return;
+  void i18n.use(initReactI18next).init({
+    resources: {
+      en: { translation: en },
+      es: { translation: es },
+    },
+    lng,
+    fallbackLng: defaultLocale,
+    supportedLngs: [...locales],
+    defaultNS: "translation",
+    interpolation: { escapeValue: false },
+    react: { useSuspense: false },
+    initImmediate: false,
+  });
+}
+
+export function ensureI18n(initialLng?: Locale | null): typeof i18n {
+  const target = pickInitialLocale(initialLng);
+  initOnce(target);
+  // If the caller (e.g. server-driven I18nProvider) wants a specific lng
+  // that differs from the current one, switch. On the browser the initial
+  // language already matches the cookie (which matches SSR), so this is a
+  // no-op in the steady state and never causes a hydration mismatch.
+  if (i18n.language !== target) {
+    void i18n.changeLanguage(target);
   }
   return i18n;
 }
@@ -80,21 +92,21 @@ export function persistLocale(lng: Locale): void {
   }
 }
 
-export function initI18n(initialLng?: Locale | null) {
-  return ensureI18n(initialLng);
-}
-
-// On the server, eagerly init with defaultLocale so any usage outside the
-// React tree still gets a working i18n. On the client we let I18nProvider
-// trigger the first init (see comment in ensureI18n).
-if (!isBrowser) ensureI18n();
-
-export default i18n;
-
-/** Read the locale that should be considered "active" on the client — used to
- *  remember the user's preference if it lives in localStorage but no cookie
- *  has been written yet. Safe to call inside effects.
+/** Returns the locale the client prefers if it disagrees with the cookie —
+ *  used by I18nProvider to migrate legacy localStorage prefs after first paint.
  */
 export function readClientPreferredLocale(): Locale | undefined {
   return readCookieLocale() ?? readStorageLocale();
 }
+
+export function initI18n(initialLng?: Locale | null) {
+  return ensureI18n(initialLng);
+}
+
+// Eagerly init at module load. On the browser this reads the cookie so the
+// very first render of any component using useTranslation already has the
+// right language. On the server it falls back to defaultLocale; the real
+// per-request language is set by I18nProvider once it receives initialLocale.
+ensureI18n();
+
+export default i18n;
