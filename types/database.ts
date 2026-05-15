@@ -61,7 +61,8 @@ export type NotificationType =
   | "capacity_full"
   | "low_stock"
   | "pickup_reminder"
-  | "review_received";
+  | "review_received"
+  | "catering_request";
 
 export type ReceiptStatus = "pending_review" | "approved" | "rejected";
 
@@ -495,6 +496,23 @@ export type BroadcastRecipientInsert = Partial<BroadcastRecipientRow> &
 export type BroadcastRecipientUpdate = Partial<BroadcastRecipientRow>;
 
 // ============================================================================
+// Web Push subscriptions — one row per (user, browser endpoint)
+// ============================================================================
+export interface PushSubscriptionRow {
+  id: Uuid;
+  user_id: Uuid;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  user_agent: string | null;
+  created_at: Timestamptz;
+  last_seen_at: Timestamptz;
+}
+export type PushSubscriptionInsert = Partial<PushSubscriptionRow> &
+  Pick<PushSubscriptionRow, "user_id" | "endpoint" | "p256dh" | "auth">;
+export type PushSubscriptionUpdate = Partial<PushSubscriptionRow>;
+
+// ============================================================================
 // Database interface (shape matches @supabase generated types)
 // ============================================================================
 export interface Database {
@@ -604,6 +622,11 @@ export interface Database {
         Row: BroadcastRecipientRow;
         Insert: BroadcastRecipientInsert;
         Update: BroadcastRecipientUpdate;
+      };
+      push_subscriptions: {
+        Row: PushSubscriptionRow;
+        Insert: PushSubscriptionInsert;
+        Update: PushSubscriptionUpdate;
       };
     };
     Views: Record<string, never>;

@@ -5,6 +5,9 @@ const withPWA = nextPwa({
   register: true,
   skipWaiting: true,
   clientsClaim: true,
+  // Append `worker/index.ts` (push + notificationclick handlers) to the
+  // generated service worker.
+  customWorkerDir: "worker",
   disable: process.env.NODE_ENV === "development",
 });
 

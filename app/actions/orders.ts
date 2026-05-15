@@ -13,6 +13,7 @@ import type {
 } from "@/types/database";
 import type { CartLine } from "@/lib/stores/cart";
 import { sendOrderReceipt } from "@/lib/email/orders";
+import { notifyOwners } from "@/lib/notify/owners";
 
 export interface CreateOrderInput {
   cart: CartLine[];
@@ -178,6 +179,20 @@ export async function createOrder(
       );
     }
 
+    // Notify the owner — inbox row + Web Push if they've installed/opted in.
+    const customerName = input.customerInfo.name;
+    await notifyOwners({
+      type: "new_order",
+      title: `New order: ${customerName}`,
+      body: `${order.order_number} · ${totalLbs.toFixed(1)} lb · $${total.toFixed(2)}`,
+      metadata: {
+        order_id: order.id,
+        order_number: order.order_number,
+      },
+      pushUrl: `/admin/orders/${order.id}`,
+      tag: `order-${order.id}`,
+    });
+
     return {
       success: true,
       orderNumber: order.order_number,
@@ -194,6 +209,13 @@ export async function createOrder(
 export async function cancelOrder(orderId: string): Promise<OrderActionResult> {
   try {
     const db = await createServerSupabaseClient();
+    const { data: existing, error: readErr } = await db
+      .from("orders")
+      .select("id, order_number, guest_name, total, total_lbs")
+      .eq("id", orderId)
+      .maybeSingle();
+    if (readErr) throw readErr;
+
     const { error } = await db
       .from("orders")
       .update({
@@ -202,6 +224,21 @@ export async function cancelOrder(orderId: string): Promise<OrderActionResult> {
       })
       .eq("id", orderId);
     if (error) throw error;
+
+    if (existing) {
+      await notifyOwners({
+        type: "cancellation",
+        title: `Order cancelled: ${existing.guest_name ?? "Customer"}`,
+        body: `${existing.order_number} · ${Number(existing.total_lbs).toFixed(1)} lb · $${Number(existing.total).toFixed(2)}`,
+        metadata: {
+          order_id: existing.id,
+          order_number: existing.order_number,
+        },
+        pushUrl: `/admin/orders/${existing.id}`,
+        tag: `order-${existing.id}`,
+      });
+    }
+
     return { success: true };
   } catch (e) {
     return {

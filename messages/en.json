@@ -790,6 +790,22 @@
       "adminArea": "Owner dashboard",
       "backToSite": "Sign out",
       "openMenu": "Open menu"
+    },
+    "push": {
+      "onTitle": "Order notifications are on",
+      "onHint": "We'll buzz this device when a customer orders, cancels, or asks about catering.",
+      "offTitle": "Get a phone ping for every new order",
+      "offHint": "Install the app first (button at the top), then tap below to turn on alerts.",
+      "deniedTitle": "Notifications blocked",
+      "deniedHint": "Turn notifications back on in your browser settings to receive order alerts.",
+      "on": "Turn on notifications",
+      "off": "Turn off",
+      "test": "Send test",
+      "enabledToast": "Notifications on. You'll get a ping when a customer orders.",
+      "disabledToast": "Notifications turned off.",
+      "deniedToast": "Notifications blocked. Enable them in your browser settings to receive order alerts.",
+      "testSent": "Test sent to {{count}} device(s).",
+      "testNoDevices": "No devices registered yet. Tap 'Turn on notifications' first."
     }
   },
   "errors": {

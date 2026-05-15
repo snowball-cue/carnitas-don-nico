@@ -790,6 +790,22 @@
       "adminArea": "Panel del dueño",
       "backToSite": "Cerrar sesión",
       "openMenu": "Abrir menú"
+    },
+    "push": {
+      "onTitle": "Las notificaciones de pedidos están activas",
+      "onHint": "Este dispositivo sonará cuando un cliente haga, cancele o pregunte por catering.",
+      "offTitle": "Recibe un aviso al teléfono por cada pedido",
+      "offHint": "Primero instala la app (botón arriba), luego toca para activar los avisos.",
+      "deniedTitle": "Notificaciones bloqueadas",
+      "deniedHint": "Vuelve a activar las notificaciones en la configuración del navegador para recibir avisos.",
+      "on": "Activar notificaciones",
+      "off": "Apagar",
+      "test": "Enviar prueba",
+      "enabledToast": "Notificaciones activadas. Te avisaremos cuando un cliente haga un pedido.",
+      "disabledToast": "Notificaciones apagadas.",
+      "deniedToast": "Notificaciones bloqueadas. Actívalas en la configuración del navegador para recibir avisos de pedidos.",
+      "testSent": "Prueba enviada a {{count}} dispositivo(s).",
+      "testNoDevices": "Aún no hay dispositivos registrados. Toca 'Activar notificaciones' primero."
     }
   },
   "errors": {

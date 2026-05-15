@@ -11,6 +11,7 @@ import CateringRequestOwner from "@/lib/email/templates/CateringRequestOwner";
 import CateringRequestCustomer from "@/lib/email/templates/CateringRequestCustomer";
 import { getAppUrl, type Locale } from "@/lib/email/templates/_shared";
 import { generateCateringIcs } from "@/lib/ics";
+import { notifyOwners } from "@/lib/notify/owners";
 import type { CateringRequestRow } from "@/types/database";
 
 const OWNER_EMAIL_FALLBACK = "carnitasdonnico25@gmail.com";
@@ -235,6 +236,19 @@ export async function submitCateringRequest(
     } catch (e) {
       console.error("[catering] customer email failed:", e);
     }
+
+    // Owner inbox + Web Push.
+    await notifyOwners({
+      type: "catering_request",
+      title: `Catering: ${data.fullName}`,
+      body: `${data.guestCount} guests · ${data.estimatedLbs.toFixed(1)} lb · ${data.eventDate}`,
+      metadata: {
+        catering_id: row.id,
+        reference,
+      },
+      pushUrl: `/admin/catering/${row.id}`,
+      tag: `catering-${row.id}`,
+    });
 
     return { success: true, reference };
   } catch (e) {

@@ -19,6 +19,7 @@ import { CapacityBar } from "./_components/CapacityBar";
 import { CountdownPill } from "./_components/CountdownPill";
 import { T } from "./_components/TranslatedText";
 import { StatusPill } from "./_components/StatusPill";
+import { PushSetup } from "./_components/PushSetup";
 
 export const dynamic = "force-dynamic";
 
@@ -296,6 +297,9 @@ export default async function AdminDashboardPage() {
 
       {/* Big action tiles */}
       <QuickActions />
+
+      {/* Push-notification opt-in (renders nothing once subscribed) */}
+      <PushSetup />
 
       {/* Recent orders */}
       <Card>
