@@ -236,7 +236,7 @@ function UserFooter({ user }: { user: AdminUserSummary }) {
   }, [pending, router]);
 
   return (
-    <div className="border-t border-papel/10 p-4">
+    <div className="space-y-3 border-t border-papel/10 p-4">
       <div className="flex items-center gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-oro text-mole font-display text-lg font-semibold">
           {initial}
@@ -247,17 +247,16 @@ function UserFooter({ user }: { user: AdminUserSummary }) {
           </p>
           <p className="truncate text-xs text-papel/60">{user.email}</p>
         </div>
-        <button
-          type="button"
-          onClick={() => void onSignOut()}
-          disabled={pending}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md text-papel/70 hover:bg-papel/10 hover:text-papel disabled:opacity-50"
-          title={t("admin.shell.backToSite")}
-          aria-label={t("admin.shell.backToSite")}
-        >
-          <LogOut className="h-5 w-5" />
-        </button>
       </div>
+      <button
+        type="button"
+        onClick={() => void onSignOut()}
+        disabled={pending}
+        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-papel/20 px-3 text-[15px] font-semibold text-papel hover:bg-papel/10 disabled:opacity-50"
+      >
+        <LogOut className="h-5 w-5" />
+        {t("admin.shell.backToSite")}
+      </button>
     </div>
   );
 }

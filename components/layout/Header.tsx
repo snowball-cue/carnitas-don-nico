@@ -122,43 +122,48 @@ export function Header() {
           </Link>
 
           {/* Desktop auth */}
-          <div className="hidden md:block">
+          <div className="hidden items-center gap-2 md:flex">
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className="flex items-center gap-2 rounded-full hover:opacity-80"
-                    aria-label={t("nav.account")}
-                  >
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-oro text-mole text-xs font-semibold">
-                        {displayName.slice(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuLabel>{displayName}</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/account">
-                      <UserIcon className="mr-2 h-4 w-4" />
-                      {t("nav.account")}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/orders">
-                      <ClipboardList className="mr-2 h-4 w-4" />
-                      {t("nav.orders")}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => void signOut()}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    {t("nav.signOut")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="flex items-center gap-2 rounded-full hover:opacity-80"
+                      aria-label={t("nav.account")}
+                    >
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="bg-oro text-mole text-xs font-semibold">
+                          {displayName.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel>{displayName}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/account">
+                        <UserIcon className="mr-2 h-4 w-4" />
+                        {t("nav.account")}
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/orders">
+                        <ClipboardList className="mr-2 h-4 w-4" />
+                        {t("nav.orders")}
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <button
+                  type="button"
+                  onClick={() => void signOut()}
+                  className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-papel/80 hover:bg-nopal-dark hover:text-papel"
+                >
+                  <LogOut className="h-4 w-4" />
+                  {t("nav.signOut")}
+                </button>
+              </>
             ) : (
               <Button asChild variant="oro" size="sm">
                 <Link href="/login">{t("nav.signIn")}</Link>
